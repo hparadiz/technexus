@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+User-agent: *
+Disallow: /admin/
+
+User-agent: *
+Disallow: /info

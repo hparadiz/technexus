@@ -1,0 +1,202 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "9bd3067521a26589951ec8e511cb7677",
+    "packages": [
+        {
+            "name": "divergence/divergence",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hparadiz/divergence.git",
+                "reference": "9fbb46be664d9d5cdfdfe990d502877167d22484"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hparadiz/divergence/zipball/9fbb46be664d9d5cdfdfe990d502877167d22484",
+                "reference": "9fbb46be664d9d5cdfdfe990d502877167d22484",
+                "shasum": ""
+            },
+            "require": {
+                "dwoo/dwoo": "1.3.6",
+                "filp/whoops": ">=2.1.14",
+                "php": ">=7.0"
+            },
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "App\\": "classes/App",
+                    "Divergence\\": "classes/Divergence"
+                }
+            },
+            "description": "The Divergence Framework.",
+            "keywords": [
+                "divergence",
+                "framework"
+            ],
+            "support": {
+                "source": "https://github.com/hparadiz/divergence/tree/master",
+                "issues": "https://github.com/hparadiz/divergence/issues"
+            },
+            "time": "2018-04-16T10:33:19+00:00"
+        },
+        {
+            "name": "dwoo/dwoo",
+            "version": "1.3.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dwoo-project/dwoo.git",
+                "reference": "dba4344c5179f184c67dc23e914eedcfa0609c84"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dwoo-project/dwoo/zipball/dba4344c5179f184c67dc23e914eedcfa0609c84",
+                "reference": "dba4344c5179f184c67dc23e914eedcfa0609c84",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3|^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.8.27"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dwoo\\": "lib/Dwoo/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "David Sanchez",
+                    "email": "david38sanchez@gmail.com"
+                }
+            ],
+            "description": "Dwoo is a PHP5/PHP7 template engine which is (almost) fully compatible with Smarty templates and plugins, but is written from scratch for PHP5, and adds many features.",
+            "time": "2017-03-27T23:25:23+00:00"
+        },
+        {
+            "name": "filp/whoops",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/filp/whoops.git",
+                "reference": "181c4502d8f34db7aed7bfe88d4f87875b8e947a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/filp/whoops/zipball/181c4502d8f34db7aed7bfe88d4f87875b8e947a",
+                "reference": "181c4502d8f34db7aed7bfe88d4f87875b8e947a",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.5.9 || ^7.0",
+                "psr/log": "^1.0.1"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9 || ^1.0",
+                "phpunit/phpunit": "^4.8.35 || ^5.7",
+                "symfony/var-dumper": "^2.6 || ^3.0 || ^4.0"
+            },
+            "suggest": {
+                "symfony/var-dumper": "Pretty print complex values better with var-dumper available",
+                "whoops/soap": "Formats errors as SOAP responses"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Whoops\\": "src/Whoops/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Filipe Dobreira",
+                    "homepage": "https://github.com/filp",
+                    "role": "Developer"
+                }
+            ],
+            "description": "php error handling for cool kids",
+            "homepage": "https://filp.github.io/whoops/",
+            "keywords": [
+                "error",
+                "exception",
+                "handling",
+                "library",
+                "throwable",
+                "whoops"
+            ],
+            "time": "2018-03-03T17:56:25+00:00"
+        },
+        {
+            "name": "psr/log",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/log.git",
+                "reference": "3490ba5925e6dcbe6de950c5c6b8dce9f6e96eda"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/3490ba5925e6dcbe6de950c5c6b8dce9f6e96eda",
+                "reference": "3490ba5925e6dcbe6de950c5c6b8dce9f6e96eda",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Log\\": "Psr/Log/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for logging libraries",
+            "homepage": "https://github.com/php-fig/log",
+            "keywords": [
+                "log",
+                "psr",
+                "psr-3"
+            ],
+            "time": "2018-04-03T15:59:15+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
