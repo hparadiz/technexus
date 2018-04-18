@@ -30,7 +30,7 @@ class BlogPost extends \Divergence\Models\Model
             'type' => 'timestamp',
             'notnull' => false,
         ],
-        
+        'Status'
     ];
     
     public static $relationships = [
@@ -48,4 +48,12 @@ class BlogPost extends \Divergence\Models\Model
             'local' => 'ID',
         ],
     ];
+    
+    public function save($deep = true)
+    {
+	    if ($this->isDirty) {
+		    $this->Edited = time();
+		}
+	    return parent::save($deep);
+	}
 }

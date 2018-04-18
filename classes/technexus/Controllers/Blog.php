@@ -14,11 +14,26 @@ class Blog extends \Divergence\Controllers\RequestHandler
             'Months' => DB::AllRecords('SELECT DISTINCT MONTHNAME(`Created`) as `MonthName`,MONTH(`Created`) as `Month`, YEAR(`Created`) as `Year` FROM `blog_posts`'),
         ];
     }
+    
+    public static function conditions() {
+	    if(App::is_loggedin()) {
+		    return [
+			    "`Status` IN ('Draft','Published')"
+		    ];
+		}
+		else {
+			return [
+			    "`Status` IN ('Published')"
+		    ];
+		}
+    }
 
     public static function home()
-    {
-        $BlogPosts = BlogPost::getAll([
-            'order' =>  'Created DESC',
+    {	    
+        $BlogPosts = BlogPost::getAllByWhere(array_merge(static::conditions(),[
+	        
+        ]),[
+            'order' =>  'Created DESC'
         ]);
         
         return static::respond('blog/posts.tpl', [
@@ -29,9 +44,9 @@ class Blog extends \Divergence\Controllers\RequestHandler
     
     public static function year($year)
     {
-        $BlogPosts = BlogPost::getAllByWhere([
+        $BlogPosts = BlogPost::getAllByWhere(array_merge(static::conditions(),[
             sprintf('YEAR(`Created`)=%d', $year),
-        ], [
+        ]), [
             'order' =>  'Created DESC',
         ]);
         
@@ -43,10 +58,10 @@ class Blog extends \Divergence\Controllers\RequestHandler
     
     public static function month($year, $month)
     {
-        $BlogPosts = BlogPost::getAllByWhere([
+        $BlogPosts = BlogPost::getAllByWhere(array_merge(static::conditions(),[
             sprintf('YEAR(`Created`)=%d', $year),
             sprintf('MONTH(`Created`)=%d', $month),
-        ], [
+        ]), [
             'order' =>  'Created DESC',
         ]);
         
@@ -58,11 +73,11 @@ class Blog extends \Divergence\Controllers\RequestHandler
     
     public static function post($year, $month, $permalink)
     {
-        $BlogPost = BlogPost::getByWhere([
+        $BlogPost = BlogPost::getByWhere(array_merge(static::conditions(),[
             sprintf('YEAR(`Created`)=%d', $year),
             sprintf('MONTH(`Created`)=%d', $month),
             "`permalink`='".DB::escape($permalink)."'",
-        ]);
+        ]));
         
         return static::respond('blog/post.tpl', [
             'BlogPost' => $BlogPost,
@@ -71,12 +86,18 @@ class Blog extends \Divergence\Controllers\RequestHandler
     }
     
     public static function topics()
-    {
+    {   
         if (static::peekPath()) {
+			if(App::is_loggedin()) {
+				$where = "`Status` IN ('Draft','Published')";
+			}
+			else {
+				$where = "`Status` IN ('Published')";
+			}
             if ($Tag = \technexus\Models\Tag::getByField('Slug', static::shiftPath())) {
                 $BlogPosts = BlogPost::getAllByQuery("SELECT `bp`.* FROM `blog_posts` `bp`
 					INNER JOIN tags as `t` ON `t`.`ContextID`=`bp`.`ID`
-					WHERE `t`.`Slug`='%s'", $Tag->Slug);
+					WHERE `t`.`Slug`='%s' AND $WHERE", $Tag->Slug);
                     
                 return static::respond('blog/posts.tpl', [
                     'Title' => $Tag->Tag,
@@ -145,7 +166,7 @@ class Blog extends \Divergence\Controllers\RequestHandler
             App::$Session->CreatorID = null;
             App::$Session->save();
         }
-        header('Location: /blog/');
+        header('Location: /');
         exit;
     }
 }

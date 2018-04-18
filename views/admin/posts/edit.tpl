@@ -26,6 +26,13 @@
 				<label for="mainContent">Content</label>
 				<textarea class="form-control" id="mainContent" placeholder="" required="" name="MainContent">{$data.BlogPost->MainContent}</textarea>
 			</div>
+			<div class="mb-3">
+				<label for="status">Status</label>
+				<select class="form-control" id="status" name="Status">
+					<option{if $data.BlogPost->Status == 'Draft'} selected{/if}>Draft</option>
+					<option{if $data.BlogPost->Status == 'Published'} selected{/if}>Published</option>
+				</select>
+			</div>
 			<small id="lastEdit" class="form-text text-muted">Last edited {date_format $data.BlogPost->Edited "%m/%d/%y %k:%M %p"}<div class="loader float-right" id="loader-1" style="display: none;"></div></small>
 			<hr class="mb-4">
 			<button class="btn btn-primary btn-lg btn-block" type="submit">Save</button>

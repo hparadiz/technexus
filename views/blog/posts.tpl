@@ -7,8 +7,10 @@
 	{foreach from=$data.BlogPosts item=BlogPost}
 		{BlogPost $BlogPost}
 	{/foreach}
+	{if count($data.BlogPosts)>10}
 	<nav class="blog-pagination">
 		<a class="btn btn-outline-primary" href="#">Older</a>
 		<a class="btn btn-outline-secondary disabled" href="#">Newer</a>
 	</nav>
+	{/if}
 {/block}
