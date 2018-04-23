@@ -33,14 +33,24 @@
 					<option{if $data.BlogPost->Status == 'Published'} selected{/if}>Published</option>
 				</select>
 			</div>
+			<div class="mb-3">
+				<label for="tags">Tags</label>
+				<input type="text" class="form-control" name="Tags" value="{$data.BlogPost->getTags()}">
+			</div>
 			<small id="lastEdit" class="form-text text-muted">Last edited {date_format $data.BlogPost->Edited "%m/%d/%y %k:%M %p"}<div class="loader float-right" id="loader-1" style="display: none;"></div></small>
 			<hr class="mb-4">
 			<button class="btn btn-primary btn-lg btn-block" type="submit">Save</button>
 		</form>
 	</div>
+	<script>
+		document.typeAheadTags = [{\technexus\Models\Tag::getTypeahead()}];
+	</script>
 {/block}
 
 {block "js-bottom"}
 	{$dwoo.parent}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js" integrity="sha256-LOnFraxKlOhESwdU/dX+K0GArwymUDups0czPWLEg4E=" crossorigin="anonymous"></script>
+	<script src="/js/bootstrap-tagsinput/bootstrap-tagsinput.js?{time()}"></script>
+	<link href="/js/bootstrap-tagsinput/bootstrap-tagsinput.css?{time()}" rel="stylesheet">
 	<script src="/js/admin/posts/edit.js?{time()}" rel="stylesheet"></script>
 {/block}

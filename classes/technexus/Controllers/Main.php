@@ -17,7 +17,7 @@ class Main extends \Divergence\Controllers\RequestHandler
          */
         header('HTTP/1.0 200 OK');
         //header('X-Powered-By: PHP/' . phpversion() . ' Div Framework (http://emr.ge) Henry\'s Revision');
-        
+
 
         
         return Blog::handleRequest();

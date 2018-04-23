@@ -50,7 +50,8 @@ var editposts = {
 		});
 		
 		$(document).on('keydown', (e) => {
-			if ((e.metaKey || e.ctrlKey) && ( String.fromCharCode(e.which).toLowerCase() === 'c') ) {
+			if ((e.metaKey || e.ctrlKey) && ( String.fromCharCode(e.which).toLowerCase() === 's') ) {
+				console.log('save');
 				e.preventDefault();
 				this.save();
 			}
@@ -58,9 +59,30 @@ var editposts = {
 		
 		
 		$( 'form' ).on( 'submit', (e) => {
+			console.log('butt');
 			e.preventDefault();
 			this.save();
 
+		});
+		
+		
+		var tagsEl = 'input[name="Tags"]';
+		
+		$(tagsEl).tagsinput({
+		  tagClass: 'badge badge-pill badge-secondary',
+		  freeInput: true,
+		  trimValue: true,
+		  typeahead: {
+		    source: document.typeAheadTags,
+		    afterSelect: () => {
+		      $(tagsEl).tagsinput('input').val('');
+		    }
+		  }
+		});
+		
+		// keeps the plugin from throwing a form.submit() on the main form
+		$('input[name="Tags"]').on('itemAdded', (e) => {
+			e.preventDefault();
 		});
 	},
 	save: function() {

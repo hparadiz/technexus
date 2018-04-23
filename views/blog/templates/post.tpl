@@ -7,7 +7,7 @@
 				<br>
 				<span class="blog-post-tags">
 				{foreach from=$BlogPost->Tags item=Tag}
-					<a class="badge badge-secondary" href="/topics/{$Tag->Slug}">{$Tag->Tag}</a>	
+					<a class="badge badge-secondary" href="/topics/{$Tag->Tag->Slug}">{$Tag->Tag->Tag}</a>	
 				{/foreach}
 				</span>
 			{/if}

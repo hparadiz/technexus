@@ -25,27 +25,14 @@ class Tag extends \Divergence\Models\Model
     public static $fields = [
         'Tag',
         'Slug',
-        'ContextClass',
-        'ContextID' => [
-            'type' => 'integer',
-            'unsigned' => true,
-        ],
     ];
     
-    public static $relationships = [
-        'Creator' => [
-            'type' => 'one-one'
-            ,'class' => 'User'
-            ,'local'	=>	'CreatorID'
-            ,'foreign' => 'ID',
-            //,'conditions' => 'Status != "Deleted"'
-            //,'order' => ['name' => 'ASC']
-        ],
-        'BlogPosts' => [
-            'type' => 'context-parent',
-            'allowedClasses' => [
-                '\technexus\\Models\\BlogPost',
-            ],
-        ],
-    ];
+    public static function getTypeahead() {
+	    $Tags = static::getAll();
+	    $Values = [];
+	    foreach($Tags as $Tag) {
+		    $Values[] = $Tag->Tag;
+	    }
+	    return "'".implode($Values,"','")."'";
+    }
 }

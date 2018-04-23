@@ -88,7 +88,7 @@ class Blog extends \Divergence\Controllers\RequestHandler
     public static function topics()
     {   
         if (static::peekPath()) {
-			if(App::is_loggedin()) {
+			/*if(App::is_loggedin()) {
 				$where = "`Status` IN ('Draft','Published')";
 			}
 			else {
@@ -104,7 +104,7 @@ class Blog extends \Divergence\Controllers\RequestHandler
                     'BlogPosts' => $BlogPosts,
                     'Sidebar' => static::getSidebarData(),
                 ]);
-            }
+            }*/
         }
     }
 
