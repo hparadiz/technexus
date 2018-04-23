@@ -5,13 +5,15 @@ use \technexus\App as App;
 
 use Divergence\IO\Database\MySQL as DB;
 use \technexus\Models\BlogPost as BlogPost;
+use \technexus\Models\PostTags as PostTags;
 
 class Blog extends \Divergence\Controllers\RequestHandler
 {
     public static function getSidebarData()
     {
         return [
-            'Months' => DB::AllRecords('SELECT DISTINCT MONTHNAME(`Created`) as `MonthName`,MONTH(`Created`) as `Month`, YEAR(`Created`) as `Year` FROM `blog_posts`'),
+            'Months' => DB::AllRecords(sprintf('SELECT DISTINCT MONTHNAME(`Created`) as `MonthName`,MONTH(`Created`) as `Month`, YEAR(`Created`) as `Year` FROM `%s`',BlogPost::$tableName)),
+            'Tags' => PostTags::getAllbyQuery('SELECT *,COUNT(*) as `Count` FROM `'.PostTags::$tableName.'` GROUP BY `TagID` ORDER BY `Count` DESC')
         ];
     }
     
@@ -88,23 +90,29 @@ class Blog extends \Divergence\Controllers\RequestHandler
     public static function topics()
     {   
         if (static::peekPath()) {
-			/*if(App::is_loggedin()) {
+			if(App::is_loggedin()) {
 				$where = "`Status` IN ('Draft','Published')";
 			}
 			else {
 				$where = "`Status` IN ('Published')";
 			}
             if ($Tag = \technexus\Models\Tag::getByField('Slug', static::shiftPath())) {
-                $BlogPosts = BlogPost::getAllByQuery("SELECT `bp`.* FROM `blog_posts` `bp`
-					INNER JOIN tags as `t` ON `t`.`ContextID`=`bp`.`ID`
-					WHERE `t`.`Slug`='%s' AND $WHERE", $Tag->Slug);
+                $BlogPosts = BlogPost::getAllByQuery("SELECT `bp`.* FROM `%s` `bp`
+					INNER JOIN %s as `t` ON `t`.`BlogPostID`=`bp`.`ID`
+					WHERE `t`.`TagID`='%s' AND $where",
+					[
+						BlogPost::$tableName,
+						PostTags::$tableName,
+						$Tag->ID
+					]
+				);
                     
                 return static::respond('blog/posts.tpl', [
                     'Title' => $Tag->Tag,
                     'BlogPosts' => $BlogPosts,
                     'Sidebar' => static::getSidebarData(),
                 ]);
-            }*/
+            }
         }
     }
 

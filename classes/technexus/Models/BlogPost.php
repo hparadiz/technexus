@@ -44,7 +44,7 @@ class BlogPost extends \Divergence\Models\Model
         ],
         'Tags' => [
             'type' => 'one-many',
-            'class' => '\technexus\Models\PostTags',
+            'class' => PostTags::class,
             'local' => 'ID',
             'foreign' => 'BlogPostID'
         ],

@@ -13,6 +13,14 @@
 	  {/foreach}
     </ol>
   </div>
+  
+  <div class="p-3">
+	  <h4 class="font-italic">Topics</h4>
+	  {foreach from=$data.Sidebar.Tags item=Tag}
+	  	<a class="badge badge-secondary" href="/topics/{$Tag->Tag->Slug}">{$Tag->Tag->Tag}</a>	
+	  {/foreach}
+    </ol>
+  </div>
 
   <div class="p-3">
     <h4 class="font-italic">Elsewhere</h4>
