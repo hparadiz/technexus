@@ -1,7 +1,12 @@
 var editposts = {
+	selectors: {
+		textareaContent: 'textarea#mainContent',
+		tagsEl: 'input[name="Tags"]',
+		form: 'form'
+	},
 	onload: function (e)  {
 		tinymce.init({
-			selector: 'textarea#mainContent',
+			selector: this.selectors.textareaContent,
 			height: 400,
 			menubar: true, 
 			content_css : [
@@ -14,7 +19,7 @@ var editposts = {
 			plugins: [
 				'advlist autolink lists link image charmap print preview anchor',
 				'searchreplace visualblocks fullscreen',
-				'insertdatetime media table contextmenu code codesample wordcount'
+				'insertdatetime media table contextmenu code codesample wordcount save'
 			],
 			codesample_languages: [
 				{text: 'HTML/XML', value: 'markup'},
@@ -33,6 +38,7 @@ var editposts = {
 				{text: 'SQL', value: 'sql'},
 				{text: 'Apache Config', value: 'apacheconf'}
 			],
+			toolbar: 'save | undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | fontsizeselect',
 			body_class: 'blog-main',
 			smart_paste: false,
 			paste_plaintext_inform: false,
@@ -46,42 +52,45 @@ var editposts = {
 			paste_remove_styles: false,
 			paste_filter_drop: false,
 			paste_remove_styles_if_webkit: false,
-			valid_children : "+body[style]"
+			valid_children : "+body[style]",
+			save_enablewhendirty: false,
+			save_onsavecallback: (e) => {
+				tinyMCE.triggerSave();
+				$(this.selectors.form).trigger('submit');
+			}
 		});
 		
 		$(document).on('keydown', (e) => {
 			if ((e.metaKey || e.ctrlKey) && ( String.fromCharCode(e.which).toLowerCase() === 's') ) {
-				console.log('save');
 				e.preventDefault();
-				this.save();
+				tinyMCE.triggerSave();
+				$(this.selectors.form).trigger('submit');
 			}
 		})
 		
 		
-		$( 'form' ).on( 'submit', (e) => {
-			console.log('butt');
+		$( this.selectors.form ).on( 'submit', (e) => {
 			e.preventDefault();
 			this.save();
-
 		});
 		
 		
-		var tagsEl = 'input[name="Tags"]';
+
 		
-		$(tagsEl).tagsinput({
+		$(this.selectors.tagsEl).tagsinput({
 		  tagClass: 'badge badge-pill badge-secondary',
 		  freeInput: true,
 		  trimValue: true,
 		  typeahead: {
 		    source: document.typeAheadTags,
 		    afterSelect: () => {
-		      $(tagsEl).tagsinput('input').val('');
+		      $(this.selectors.tagsEl).tagsinput('input').val('');
 		    }
 		  }
 		});
 		
 		// keeps the plugin from throwing a form.submit() on the main form
-		$('input[name="Tags"]').on('itemAdded', (e) => {
+		$(this.selectors.tagsEl).on('itemAdded', (e) => {
 			e.preventDefault();
 		});
 	},

@@ -10,7 +10,7 @@
 {/block}
 
 {block "content"}
-	<div class="col-md-8 order-md-1">
+	<div class="col-md-9 order-md-1">
 		<h4 class="mb-3">Editing Blog Post (ID: {$data.BlogPost->ID})</h4>
 		<input type="hidden" id="BlogPostID" value="{$data.BlogPost->ID}">
 		<form>
@@ -24,7 +24,7 @@
 			</div>
 			<div class="mb-3">
 				<label for="mainContent">Content</label>
-				<textarea class="form-control" id="mainContent" placeholder="" required="" name="MainContent">{$data.BlogPost->MainContent}</textarea>
+				<textarea class="form-control" id="mainContent" placeholder="" name="MainContent">{$data.BlogPost->MainContent}</textarea>
 			</div>
 			<div class="mb-3">
 				<label for="status">Status</label>

@@ -87,18 +87,28 @@ class BlogPost extends \Divergence\Models\Model
 	    \Divergence\IO\Database\MySQL::nonQuery($rmQuery);
     }
     
+    public function clearTags() {
+	    $rmQuery = 'DELETE FROM `' . PostTags::$tableName . "` WHERE `BlogPostID`='{$this->ID}'";
+	    \Divergence\IO\Database\MySQL::nonQuery($rmQuery);
+    }
+    
     public function save($deep = true)
     {
 	    if ($this->isDirty) {
 		    $this->Edited = time();
 		}
 		
-		if($_POST['Tags']) {
-			$TagData = explode(',',$_POST['Tags']);
-			if(!$TagData) {
-				$TagData = $_POST['Tags'];
+		if(isset($_POST['Tags'])) {
+			if(empty($_POST['Tags'])) {
+				$this->clearTags();
 			}
-			$this->saveTags($TagData);
+			else {
+				$TagData = explode(',',$_POST['Tags']);
+				if(!$TagData) {
+					$TagData = $_POST['Tags'];
+				}
+				$this->saveTags($TagData);
+			}
 		}
 		
 	    return parent::save($deep);
