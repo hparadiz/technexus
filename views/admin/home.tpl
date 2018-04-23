@@ -1,8 +1,18 @@
 {extends "/admin/design.tpl"}
 
 {block "content"}
-	<h5>Blog Posts</h5>
+	
+
+	<div class="row">
+		<div class="col-11">
+			<h5>Blog Posts</h5>
+		</div>
+		<div class="col-1">
+		<a class="btn-sm btn-primary" href="/admin/posts/new"><i class="fas fa-edit"></i> New</a>
+		</div>
+	</div>
 	<ul class="list-group">
+		
 		{foreach from=$data.BlogPosts item=BlogPost}
 		<li class="list-group-item">
 			{$BlogPost->Title}
@@ -14,4 +24,5 @@
 		</li>
 		{/foreach}
 	</ul>
+	</div>
 {/block}
