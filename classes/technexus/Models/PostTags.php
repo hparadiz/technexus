@@ -30,7 +30,7 @@ class PostTags extends \Divergence\Models\Model
         'TagID' => [
             'type' => 'integer'
             ,'unsigned' => true,
-        ]
+        ],
     ];
     
     public static $relationships = [
@@ -43,6 +43,6 @@ class PostTags extends \Divergence\Models\Model
             'type' => 'one-one',
             'class' => '\technexus\Models\BlogPost',
             'local' => 'BlogPostID',
-        ]
+        ],
     ];
 }

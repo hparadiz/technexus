@@ -28,10 +28,10 @@ class Admin extends \Divergence\Controllers\RequestHandler
     public static function posts()
     {
         switch ($action = $action ? $action : static::shiftPath()) {
-		    case 'new':
-		    	return static::newpost();
-	    }
-	    
+            case 'new':
+                return static::newpost();
+        }
+        
         if ($BlogPost = BlogPost::getByID($action)) {
             static::respond('admin/posts/edit.tpl', [
                 'BlogPost' => $BlogPost,
@@ -39,15 +39,16 @@ class Admin extends \Divergence\Controllers\RequestHandler
         }
     }
     
-    public static function newpost() {
-	    $BlogPost = BlogPost::create([
-		    'Title' => 'Untitled',
-		    'Permalink' => 'untitled',
-		    'Status' => 'Draft'
-	    ],true);
-	    
-	    header('Location: /admin/posts/'.$BlogPost->ID);
-	    exit;
+    public static function newpost()
+    {
+        $BlogPost = BlogPost::create([
+            'Title' => 'Untitled',
+            'Permalink' => 'untitled',
+            'Status' => 'Draft',
+        ], true);
+        
+        header('Location: /admin/posts/'.$BlogPost->ID);
+        exit;
     }
     
     public static function handleRequest()

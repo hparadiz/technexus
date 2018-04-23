@@ -27,12 +27,13 @@ class Tag extends \Divergence\Models\Model
         'Slug',
     ];
     
-    public static function getTypeahead() {
-	    $Tags = static::getAll();
-	    $Values = [];
-	    foreach($Tags as $Tag) {
-		    $Values[] = $Tag->Tag;
-	    }
-	    return "'".implode($Values,"','")."'";
+    public static function getTypeahead()
+    {
+        $Tags = static::getAll();
+        $Values = [];
+        foreach ($Tags as $Tag) {
+            $Values[] = $Tag->Tag;
+        }
+        return "'".implode($Values, "','")."'";
     }
 }
