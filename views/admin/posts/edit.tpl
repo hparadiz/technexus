@@ -2,7 +2,6 @@
 
 {block "meta-top"}
 	{$dwoo.parent}
-	{*<script src="https://cdn.ckeditor.com/ckeditor5/1.0.0-beta.1/classic/ckeditor.js"></script>*}
 	<script src="//cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.10/tinymce.min.js" integrity="sha256-ibVg3nLs0DX10T7r/GxKZzdLsqyGTDzVBQv9WmxQOt0=" crossorigin="anonymous"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.0/moment.min.js" integrity="sha256-DELCOgoVsZqjT78lDC7zcX+YFp+PEjh1k23mBMoDBwo=" crossorigin="anonymous"></script>
 	<link href="//www.tinymce.com/css/codepen.min.css" rel="stylesheet">

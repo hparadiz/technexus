@@ -10,7 +10,8 @@ return PhpCsFixer\Config::create()
         '@PSR1' => true,
         '@PSR2' => true,
         'array_syntax' => ['syntax' => 'short'],
-        'trailing_comma_in_multiline_array' => true,
+        'trailing_comma_in_multiline_array' => false,
+        'no_trailing_comma_in_singleline_array' => true,
         'ternary_operator_spaces' => true,
         'trim_array_spaces' => true,
         'ordered_imports' => [
