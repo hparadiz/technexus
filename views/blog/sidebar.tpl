@@ -9,7 +9,7 @@
     <h4 class="font-italic">Archives</h4>
     <ol class="list-unstyled mb-0">
 	  {foreach from=$data.Sidebar.Months item=Month}
-	  	<li><a href="/blog/{$Month.Year}/{str_pad($Month.Month, 2, '0', 0)}/">{$Month.MonthName} {$Month.Year}</a></li>
+	  	<li><a href="/{$Month.Year}/{str_pad($Month.Month, 2, '0', 0)}/">{$Month.MonthName} {$Month.Year}</a></li>
 	  {/foreach}
     </ol>
   </div>

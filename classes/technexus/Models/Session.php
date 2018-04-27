@@ -34,8 +34,7 @@ class Session extends \Divergence\Models\Model
             'notnull' => false,
         ]
         ,'LastIP' => [
-            'type' => 'integer'
-            ,'unsigned' => true,
+            'type' => 'binary'
         ],
     ];
     
@@ -55,7 +54,7 @@ class Session extends \Divergence\Models\Model
     public static function getFromRequest($create = true)
     {
         $sessionData = [
-            'LastIP' => ip2long($_SERVER['REMOTE_ADDR'])
+            'LastIP' => inet_pton($_SERVER['REMOTE_ADDR'])
             ,'LastRequest' => time(),
         ];
     
