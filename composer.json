@@ -9,12 +9,6 @@
     "require-dev": {
 	  	"friendsofphp/php-cs-fixer": "*"
     },
-    "repositories": [
-	    {
-		    "type": "vcs",
-		    "url": "https://github.com/hparadiz/divergence"
-	    }
-    ],
     "authors": [
         {
             "name": "Henry Paradiz",
