@@ -24,12 +24,12 @@ class PostTags extends \Divergence\Models\Model
     
     public static $fields = [
         'BlogPostID' => [
-            'type' => 'integer'
-            ,'unsigned' => true,
+            'type' => 'integer',
+            'unsigned' => true,
         ],
         'TagID' => [
-            'type' => 'integer'
-            ,'unsigned' => true,
+            'type' => 'integer',
+            'unsigned' => true,
         ],
     ];
     

@@ -4,14 +4,14 @@ namespace technexus\Controllers;
 class Errors extends \Divergence\Controllers\RequestHandler
 {
     public static $extensionMIMETypes = [
-        'js' => 'application/javascript'
-        ,'php' => 'application/php'
-        ,'html' => 'text/html'
-        ,'css' => 'text/css'
-        ,'apk' => 'application/vnd.android.package-archive'
-        ,'woff' => 'application/x-font-woff'
-        ,'ttf' => 'font/ttf'
-        ,'eot' => 'application/vnd.ms-fontobject',
+        'js' => 'application/javascript',
+        'php' => 'application/php',
+        'html' => 'text/html',
+        'css' => 'text/css',
+        'apk' => 'application/vnd.android.package-archive',
+        'woff' => 'application/x-font-woff',
+        'ttf' => 'font/ttf',
+        'eot' => 'application/vnd.ms-fontobject',
     ];
 
     public static function handleStaticFile()

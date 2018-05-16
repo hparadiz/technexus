@@ -24,16 +24,16 @@ class Session extends \Divergence\Models\Model
     public static $pluralNoun = 'sessions';
     
     public static $fields = [
-        'ContextClass' => null
-        ,'ContextID' => null
-        ,'Handle' => [
+        'ContextClass' => null,
+        'ContextID' => null,
+        'Handle' => [
             'unique' => true,
-        ]
-        ,'LastRequest' => [
+        ],
+        'LastRequest' => [
             'type' => 'timestamp',
             'notnull' => false,
-        ]
-        ,'LastIP' => [
+        ],
+        'LastIP' => [
             'type' => 'binary'
         ],
     ];
@@ -54,8 +54,8 @@ class Session extends \Divergence\Models\Model
     public static function getFromRequest($create = true)
     {
         $sessionData = [
-            'LastIP' => inet_pton($_SERVER['REMOTE_ADDR'])
-            ,'LastRequest' => time(),
+            'LastIP' => inet_pton($_SERVER['REMOTE_ADDR']),
+            'LastRequest' => time(),
         ];
     
         // try to load from cookie

@@ -30,10 +30,10 @@ class User extends \Divergence\Models\Model
     
     public static $relationships = [
         /*'Creator' => [
-            'type' => 'one-one'
-            ,'class' => 'User'
-            ,'local'	=>	'CreatorID'
-            ,'foreign' => 'ID'
+            'type' => 'one-one',
+            'class' => 'User',
+            'local'	=>	'CreatorID',
+            'foreign' => 'ID',
             //,'conditions' => 'Status != "Deleted"'
             //,'order' => ['name' => 'ASC']
         ]*/
