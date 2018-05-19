@@ -27,7 +27,7 @@ trait LoggedIn
         return static::is();
     }
     
-    public static function checkAPIAccess($responseID, $responseData, $responseMode)
+    public static function checkAPIAccess()
     {
         return static::is();
     }
