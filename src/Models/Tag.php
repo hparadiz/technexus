@@ -36,4 +36,12 @@ class Tag extends \Divergence\Models\Model
         }
         return "'".implode($Values, "','")."'";
     }
+
+    public static $validators = [
+        [
+            'field' => 'Tag',
+            'minlength' => 2,
+            'errorMessage' => 'Tag must be at least two characters.',
+        ]
+    ];
 }

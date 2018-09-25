@@ -5,6 +5,7 @@ use \technexus\App as App;
 
 use Divergence\IO\Database\MySQL as DB;
 use \technexus\Controllers\Records\BlogPost as BlogPost;
+use \technexus\Controllers\Records\Tag as Tag;
 
 class API extends \Divergence\Controllers\RequestHandler
 {
@@ -18,6 +19,9 @@ class API extends \Divergence\Controllers\RequestHandler
         switch ($action = $action ? $action : static::shiftPath()) {
             case 'blogpost':
                 return BlogPost::handleRequest();
+
+            case 'tags':
+                return Tag::handleRequest();
             
         }
     }
