@@ -26,6 +26,14 @@ class Tag extends \Divergence\Models\Model
         'Tag',
         'Slug',
     ];
+
+    public static $validators = [
+        [
+            'field' => 'Tag',
+            'minlength' => 2,
+            'errorMessage' => 'Tag must be at least two characters.',
+        ]
+    ];
     
     public static function getTypeahead()
     {
@@ -36,12 +44,4 @@ class Tag extends \Divergence\Models\Model
         }
         return "'".implode($Values, "','")."'";
     }
-
-    public static $validators = [
-        [
-            'field' => 'Tag',
-            'minlength' => 2,
-            'errorMessage' => 'Tag must be at least two characters.',
-        ]
-    ];
 }

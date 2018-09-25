@@ -52,4 +52,5 @@
 	<script src="/js/bootstrap-tagsinput/bootstrap-tagsinput.js?{time()}"></script>
 	<link href="/js/bootstrap-tagsinput/bootstrap-tagsinput.css?{time()}" rel="stylesheet">
 	<script src="/js/admin/posts/edit.js?{time()}" rel="stylesheet"></script>
+	<script src="/js/media.js?{time()}" rel="stylesheet"></script>
 {/block}

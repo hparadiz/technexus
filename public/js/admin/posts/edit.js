@@ -18,12 +18,7 @@ var editposts = {
 						if (item.kind === 'file') {
 							event.preventDefault();
 							var blob = item.getAsFile();
-							console.log(blob);
-							/*var reader = new FileReader();
-							reader.onload = function(event){
-								console.log(event.target.result)
-							}; // data url!
-							reader.readAsDataURL(blob);*/
+							media.upload(blob);
 						}
 					}
 				});

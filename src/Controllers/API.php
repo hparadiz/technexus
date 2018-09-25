@@ -4,8 +4,8 @@ namespace technexus\Controllers;
 use \technexus\App as App;
 
 use Divergence\IO\Database\MySQL as DB;
-use \technexus\Controllers\Records\BlogPost as BlogPost;
 use \technexus\Controllers\Records\Tag as Tag;
+use \technexus\Controllers\Records\BlogPost as BlogPost;
 
 class API extends \Divergence\Controllers\RequestHandler
 {
