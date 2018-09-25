@@ -34,7 +34,7 @@ var editposts = {
 			plugins: [
 				'advlist autolink lists link image charmap print preview anchor',
 				'searchreplace visualblocks fullscreen',
-				'insertdatetime media table contextmenu code codesample wordcount save'
+				'insertdatetime media table code codesample wordcount save'
 			],
 			codesample_languages: [
 				{text: 'HTML/XML', value: 'markup'},
@@ -55,6 +55,7 @@ var editposts = {
 			],
 			toolbar: 'save | undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | fontsizeselect',
 			body_class: 'blog-main',
+			browser_spellcheck: true,
 			smart_paste: false,
 			paste_plaintext_inform: false,
 			paste_data_images: false,

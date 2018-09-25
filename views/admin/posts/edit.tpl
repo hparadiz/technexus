@@ -15,15 +15,15 @@
 		<form>
 			<div class="mb-3">
 				<label for="title">Title</label>
-				<input type="text" class="form-control" id="title" placeholder="" name="Title" value="{$data.BlogPost->Title}" required="">
+				<input type="text" class="form-control" id="title" placeholder="" name="Title" value="{$data.BlogPost->Title}" required="" spellcheck="true">
 			</div>
 			<div class="mb-3">
 				<label for="title">Permalink</label>
-				<input type="text" class="form-control" id="title" placeholder="" name="Permalink" value="{$data.BlogPost->Permalink}" required="">
+				<input type="text" class="form-control" id="title" placeholder="" name="Permalink" value="{$data.BlogPost->Permalink}" required="" spellcheck="true">
 			</div>
 			<div class="mb-3">
 				<label for="mainContent">Content</label>
-				<textarea class="form-control" id="mainContent" placeholder="" name="MainContent">{$data.BlogPost->MainContent}</textarea>
+				<textarea class="form-control" id="mainContent" placeholder="" name="MainContent" spellcheck="true">{$data.BlogPost->MainContent}</textarea>
 			</div>
 			<div class="mb-3">
 				<label for="status">Status</label>
