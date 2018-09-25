@@ -8,6 +8,23 @@ var editposts = {
 		tinymce.init({
 			selector: this.selectors.textareaContent,
 			height: 400,
+			init_instance_callback: function (editor) {
+				editor.on('paste', function (event) {
+					event.preventDefault();
+					var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+					console.log(JSON.stringify(items)); // will give you the mime types
+					for (index in items) {
+						var item = items[index];
+						if (item.kind === 'file') {
+							var blob = item.getAsFile();
+							var reader = new FileReader();
+							reader.onload = function(event){
+							console.log(event.target.result)}; // data url!
+							reader.readAsDataURL(blob);
+						}
+					}
+				});
+			},
 			menubar: true, 
 			content_css : [
 				'/css/blog.css?'+new Date().getTime(),
@@ -42,7 +59,7 @@ var editposts = {
 			body_class: 'blog-main',
 			smart_paste: false,
 			paste_plaintext_inform: false,
-			paste_data_images: true,
+			paste_data_images: false,
 			paste_webkit_styles: "color font-size margin font font-variant-ligatures background-color",
 			paste_retain_style_properties: "color font-size margin font font-variant-ligatures background-color",
 			paste_word_valid_elements: 'style,strong/b,em/i,u,span,p,ol,ul,li,h1,h2,h3,h4,h5,h6,' +
@@ -57,7 +74,7 @@ var editposts = {
 			save_onsavecallback: (e) => {
 				tinyMCE.triggerSave();
 				$(this.selectors.form).trigger('submit');
-			}
+			},
 		});
 		
 		$(document).on('keydown', (e) => {
@@ -66,9 +83,8 @@ var editposts = {
 				tinyMCE.triggerSave();
 				$(this.selectors.form).trigger('submit');
 			}
-		})
-		
-		
+		});
+			
 		$( this.selectors.form ).on( 'submit', (e) => {
 			e.preventDefault();
 			this.save();
