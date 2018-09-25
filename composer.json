@@ -12,22 +12,7 @@
     "require-dev": {
 	  	"friendsofphp/php-cs-fixer": "*"
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../divergence",
-            "options": {
-                "symlink": true
-            }
-        },
-        {
-            "type": "path",
-            "url": "../divergence-cli",
-            "options": {
-                "symlink": true
-            }
-        }
-    ],
+    
     "authors": [
         {
             "name": "Henry Paradiz",
