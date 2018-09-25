@@ -10,17 +10,20 @@ var editposts = {
 			height: 400,
 			init_instance_callback: function (editor) {
 				editor.on('paste', function (event) {
-					event.preventDefault();
 					var items = (event.clipboardData || event.originalEvent.clipboardData).items;
-					console.log(JSON.stringify(items)); // will give you the mime types
+					//console.log(JSON.stringify(items)); // will give you the mime types
+					//console.log(event.clipboardData.files);
 					for (index in items) {
 						var item = items[index];
 						if (item.kind === 'file') {
+							event.preventDefault();
 							var blob = item.getAsFile();
-							var reader = new FileReader();
+							console.log(blob);
+							/*var reader = new FileReader();
 							reader.onload = function(event){
-							console.log(event.target.result)}; // data url!
-							reader.readAsDataURL(blob);
+								console.log(event.target.result)
+							}; // data url!
+							reader.readAsDataURL(blob);*/
 						}
 					}
 				});
