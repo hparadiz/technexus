@@ -26,6 +26,11 @@ trait LoggedIn
     {
         return static::is();
     }
+
+    public static function checkUploadAccess()
+    {
+        return static::is();
+    }
     
     public static function checkAPIAccess()
     {

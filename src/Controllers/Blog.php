@@ -124,6 +124,9 @@ class Blog extends \Divergence\Controllers\RequestHandler
                 
             case 'api':
                 return API::handleRequest();
+
+            case 'media':
+                return Media::handleRequest();
                 
             case 'logout':
                 return static::logout();
