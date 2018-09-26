@@ -11,8 +11,6 @@ var editposts = {
 			init_instance_callback: function (editor) {
 				editor.on('paste', function (event) {
 					var items = (event.clipboardData || event.originalEvent.clipboardData).items;
-					//console.log(JSON.stringify(items)); // will give you the mime types
-					//console.log(event.clipboardData.files);
 					for (index in items) {
 						var item = items[index];
 						if (item.kind === 'file') {
@@ -77,6 +75,10 @@ var editposts = {
 				tinyMCE.triggerSave();
 				$(this.selectors.form).trigger('submit');
 			},
+		});
+
+		$('input#title').on('change', (e) => {
+			document.title = 'Editing '+e.currentTarget.value;
 		});
 		
 		$(document).on('keydown', (e) => {

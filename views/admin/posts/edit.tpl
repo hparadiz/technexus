@@ -1,5 +1,7 @@
 {extends "/admin/design.tpl"}
 
+{block "title"}Editing {if $data.BlogPost->Title}{$data.BlogPost->Title}{else}$data.BlogPost->ID}{/if}{/block}
+
 {block "meta-top"}
 	{$dwoo.parent}
 	<script src="//cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.10/tinymce.min.js" integrity="sha256-ibVg3nLs0DX10T7r/GxKZzdLsqyGTDzVBQv9WmxQOt0=" crossorigin="anonymous"></script>
