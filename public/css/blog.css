@@ -113,6 +113,17 @@ h1, h2, h3, h4, h5, h6 {
 .blog-post {
   margin-bottom: 4rem;
 }
+.blog-main img {
+  max-width: 90%;
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 1px 1px 1px black;
+  filter: drop-shadow(1px 1px 1px black);
+  height:auto;
+}
 .blog-post img {
   max-width: 90%;
   display: block;
