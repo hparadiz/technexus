@@ -1,7 +1,7 @@
 <?php
 namespace technexus;
 
-use Models\User;
+use technexus\Models\User;
 use Divergence\Models\Auth\Session;
 
 class App extends \Divergence\App
