@@ -5,5 +5,5 @@ use Divergence\Controllers\MediaRequestHandler;
 
 class Media extends MediaRequestHandler
 {
-    use Records\Permissions\LoggedIn;
+    use Records\Permissions\LoggedInMedia;
 }

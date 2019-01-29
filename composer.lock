@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "content-hash": "5ba38cedac695c53ae116ff3a6b33291",
@@ -53,12 +53,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Divergence/framework.git",
-                "reference": "4d26834d1e3521971da39b82d24fc6ec796db276"
+                "reference": "e2468ce992f8c11befa2708859f86075201ad321"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Divergence/framework/zipball/4d26834d1e3521971da39b82d24fc6ec796db276",
-                "reference": "4d26834d1e3521971da39b82d24fc6ec796db276",
+                "url": "https://api.github.com/repos/Divergence/framework/zipball/e2468ce992f8c11befa2708859f86075201ad321",
+                "reference": "e2468ce992f8c11befa2708859f86075201ad321",
                 "shasum": ""
             },
             "require": {
@@ -72,6 +72,9 @@
                 "fzaninotto/faker": "1.7.1",
                 "mikey179/vfsstream": "1.6.5",
                 "phpunit/phpunit": "^7.0"
+            },
+            "suggest": {
+                "divergence/cli": "Lets you initialize a new project as well as create, edit, and test database configurations via CLI."
             },
             "type": "project",
             "autoload": {
@@ -99,7 +102,7 @@
                 "framework",
                 "orm"
             ],
-            "time": "2018-09-25T04:37:45+00:00"
+            "time": "2018-09-25T22:53:57+00:00"
         },
         {
             "name": "dwoo/dwoo",

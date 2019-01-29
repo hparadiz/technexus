@@ -95,7 +95,7 @@ class Blog extends \Divergence\Controllers\RequestHandler
             } else {
                 $where = "`Status` IN ('Published')";
             }
-            if ($Tag = \technexus\Models\Tag::getByField('Slug', static::shiftPath())) {
+            if ($Tag = \technexus\Models\Tag::getByField('Slug', urldecode(static::shiftPath()))) {
                 $BlogPosts = BlogPost::getAllByQuery(
                     "SELECT `bp`.* FROM `%s` `bp`
 					INNER JOIN %s as `t` ON `t`.`BlogPostID`=`bp`.`ID`
