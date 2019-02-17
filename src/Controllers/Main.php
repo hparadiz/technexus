@@ -1,8 +1,22 @@
 <?php
 namespace technexus\Controllers;
 
+/**
+ * This runs from
+ * @link project://bootstrap/router.php
+ */
 class Main extends \Divergence\Controllers\RequestHandler
 {
+    /**
+     * Turns over control immediately to Blog::handleRequest();
+     *
+     * Sets up down page.
+     * @link project://site.LOCK exists in the project
+     * Displays project://down.html if it does.
+     *
+     * @uses Blog::handleRequest()
+     * @return void
+     */
     public static function handleRequest()
     {
         if (file_exists($_SERVER['DOCUMENT_ROOT'].'/site.LOCK')) {

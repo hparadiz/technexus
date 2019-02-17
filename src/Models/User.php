@@ -1,6 +1,13 @@
 <?php
 namespace technexus\Models;
 
+/**
+ * User model
+ * @inheritDoc
+ * @property string $Email Email
+ * @property string $DisplayName Username to display
+ * @property string $PasswordHash Password hash
+ */
 class User extends \Divergence\Models\Model
 {
     //use \Divergence\Models\Versioning;

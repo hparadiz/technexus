@@ -7,13 +7,17 @@ use Divergence\IO\Database\MySQL as DB;
 use \technexus\Controllers\Records\Tag as Tag;
 use \technexus\Controllers\Records\BlogPost as BlogPost;
 
+/**
+ * Routes /api/
+*/
 class API extends \Divergence\Controllers\RequestHandler
 {
     
-    /*
-     * check if logged in and show login page if not
+    /**
+     * Routes
+     *  /api/blogpost
+     *  /api/tags
      */
-    
     public static function handleRequest()
     {
         switch ($action = $action ? $action : static::shiftPath()) {

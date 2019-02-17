@@ -5,7 +5,7 @@ use \technexus\App as App;
 
 use \Divergence\Models\ActiveRecord as ActiveRecord;
 
-trait LoggedInMedia
+trait AdminWriteGuestRead
 {
     public static function is()
     {
@@ -24,7 +24,7 @@ trait LoggedInMedia
     
     public static function checkWriteAccess(ActiveRecord $Record)
     {
-        return static::is();
+        return App::is_loggedin();
     }
 
     public static function checkUploadAccess()

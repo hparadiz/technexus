@@ -5,11 +5,15 @@ use \technexus\App as App;
 
 use \Divergence\Models\ActiveRecord as ActiveRecord;
 
+/**
+ * API access to only logged in Sessions.
+ * Use this for admin.
+ */
 trait LoggedIn
 {
     public static function is()
     {
-        return App::$Session->CreatorID ? true : false;
+        return App::is_loggedin();
     }
     
     public static function checkBrowseAccess($arguments)
