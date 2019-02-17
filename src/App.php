@@ -55,7 +55,7 @@ class App extends \Divergence\App
 
     /**
      * Checks login and sets session as logged in if login attempt successful.
-     * If login succesful redirects to same page url.
+     * If login successful redirects to same page url.
      *
      * @param string $username
      * @param string $password
