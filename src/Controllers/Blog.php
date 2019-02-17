@@ -12,7 +12,7 @@ class Blog extends \Divergence\Controllers\RequestHandler
     public static function getSidebarData()
     {
         return [
-            'Months' => DB::AllRecords(sprintf('SELECT DISTINCT MONTHNAME(`Created`) as `MonthName`,MONTH(`Created`) as `Month`, YEAR(`Created`) as `Year` FROM `%s`', BlogPost::$tableName)),
+            'Months' => DB::AllRecords(sprintf('SELECT DISTINCT MONTHNAME(`Created`) as `MonthName`,MONTH(`Created`) as `Month`, YEAR(`Created`) as `Year` FROM `%s` ORDER BY `Created` DESC', BlogPost::$tableName)),
             'Tags' => PostTags::getAllbyQuery('SELECT *,COUNT(*) as `Count` FROM `'.PostTags::$tableName.'` GROUP BY `TagID` ORDER BY `Count` DESC'),
         ];
     }

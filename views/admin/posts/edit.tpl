@@ -8,6 +8,9 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.0/moment.min.js" integrity="sha256-DELCOgoVsZqjT78lDC7zcX+YFp+PEjh1k23mBMoDBwo=" crossorigin="anonymous"></script>
 	<link href="//www.tinymce.com/css/codepen.min.css" rel="stylesheet">
 	<link href="/css/editor.css?{time()}" rel="stylesheet">
+	<style>
+		body { padding: 0 !important; }
+	</style>
 {/block}
 
 {block "content"}
