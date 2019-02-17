@@ -20,6 +20,18 @@ var editposts = {
 						}
 					}
 				});
+				editor.on('drop', function (event) {
+					var items = event.dataTransfer.items;
+					for (index in items) {
+						var item = items[index];
+						if (item.kind === 'file') {
+							event.preventDefault();
+							console.log(item);
+							var blob = item.getAsFile();
+							media.upload(blob);
+						}
+					}
+				});
 			},
 			menubar: true, 
 			content_css : [
