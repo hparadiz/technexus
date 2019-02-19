@@ -26,7 +26,6 @@ var editposts = {
 						var item = items[index];
 						if (item.kind === 'file') {
 							event.preventDefault();
-							console.log(item);
 							var blob = item.getAsFile();
 							media.upload(blob);
 						}
