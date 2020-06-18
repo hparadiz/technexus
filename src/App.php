@@ -11,6 +11,9 @@ namespace technexus;
 
 use technexus\Models\User;
 use technexus\Models\Session;
+use technexus\Controllers\Main;
+use Divergence\Responders\Emitter;
+use GuzzleHttp\Psr7\ServerRequest;
 
 /**
  * Bootstraps site and provides some global references.
@@ -103,5 +106,12 @@ class App extends \Divergence\App
     public function getLoadTime()
     {
         return (microtime(true)-DIVERGENCE_START);
+    }
+
+    public function handleRequest()
+    {
+        $main = new Main();
+        $response = $main->handle(ServerRequest::fromGlobals());
+        (new Emitter($response))->emit();
     }
 }

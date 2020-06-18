@@ -1,0 +1,61 @@
+{% extends "/admin/design.twig" %}
+
+{% block title %}Editing {% if BlogPost.Title is defined %}{{BlogPost.Title}}{% else %}{{BlogPost.ID}}{% endif %}{% endblock %}
+
+{% block metatop %}
+	{{parent()}}
+	<script src="//cdnjs.cloudflare.com/ajax/libs/tinymce/4.7.10/tinymce.min.js" integrity="sha256-ibVg3nLs0DX10T7r/GxKZzdLsqyGTDzVBQv9WmxQOt0=" crossorigin="anonymous"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.0/moment.min.js" integrity="sha256-DELCOgoVsZqjT78lDC7zcX+YFp+PEjh1k23mBMoDBwo=" crossorigin="anonymous"></script>
+	<link href="//www.tinymce.com/css/codepen.min.css" rel="stylesheet">
+	<link href="/css/editor.css?{time()}" rel="stylesheet">
+	<style>
+		body { padding: 0 !important; }
+	</style>
+{% endblock %}
+
+{% block content %}
+	<div class="col-md-9 order-md-1">
+		<h4 class="mb-3">Editing Blog Post (ID: {{BlogPost.ID}})</h4>
+		<input type="hidden" id="BlogPostID" value="{{BlogPost.ID}}">
+		<form>
+			<div class="mb-3">
+				<label for="title">Title</label>
+				<input type="text" class="form-control" id="title" placeholder="" name="Title" value="{{BlogPost.Title}}" required="" spellcheck="true">
+			</div>
+			<div class="mb-3">
+				<label for="title">Permalink</label>
+				<input type="text" class="form-control" id="title" placeholder="" name="Permalink" value="{{BlogPost.Permalink}}" required="" spellcheck="true">
+			</div>
+			<div class="mb-3">
+				<label for="mainContent">Content</label>
+				<textarea class="form-control" id="mainContent" placeholder="" name="MainContent" spellcheck="true">{{BlogPost.MainContent}}</textarea>
+			</div>
+			<div class="mb-3">
+				<label for="status">Status</label>
+				<select class="form-control" id="status" name="Status">
+					<option{% if BlogPost.Status == 'Draft' %} selected{% endif %}>Draft</option>
+					<option{% if BlogPost.Status == 'Published' %} selected{% endif %}>Published</option>
+				</select>
+			</div>
+			<div class="mb-3">
+				<label for="tags">Tags</label>
+				<input type="text" class="form-control" name="Tags" value="{#BlogPost.getTags()#}">
+			</div>
+			<small id="lastEdit" class="form-text text-muted">Last edited {#date_format BlogPost.Edited "%m/%d/%y %k:%M %p"#}<div class="loader float-right" id="loader-1" style="display: none;"></div></small>
+			<hr class="mb-4">
+			<button class="btn btn-primary btn-lg btn-block" type="submit">Save</button>
+		</form>
+	</div>
+	<script>
+		document.typeAheadTags = [{\technexus\Models\Tag::getTypeahead()}];
+	</script>
+{% endblock %}
+
+{% block jsbottom %}
+	{{parent()}}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js" integrity="sha256-LOnFraxKlOhESwdU/dX+K0GArwymUDups0czPWLEg4E=" crossorigin="anonymous"></script>
+	<script src="/js/bootstrap-tagsinput/bootstrap-tagsinput.js?{{"now"|date('U')}}"></script>
+	<link href="/js/bootstrap-tagsinput/bootstrap-tagsinput.css?{{"now"|date('U')}}" rel="stylesheet">
+	<script src="/js/admin/posts/edit.js?{{"now"|date('U')}}" rel="stylesheet"></script>
+	<script src="/js/media.js?{{"now"|date('U')}}" rel="stylesheet"></script>
+{% endblock %}

@@ -1,9 +1,19 @@
 <?php
+/**
+ * This file is part of the Divergence package.
+ *
+ * (c) Henry Paradiz <henry.paradiz@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace technexus\Controllers;
 
 use \technexus\App as App;
 
+use Psr\Http\Message\RequestInterface;
 use Divergence\IO\Database\MySQL as DB;
+use Psr\Http\Message\ResponseInterface;
 use \technexus\Controllers\Records\Tag as Tag;
 use \technexus\Controllers\Records\BlogPost as BlogPost;
 
@@ -18,9 +28,9 @@ class API extends \Divergence\Controllers\RequestHandler
      *  /api/blogpost
      *  /api/tags
      */
-    public static function handleRequest()
+    public function handle(RequestInterface $request):ResponseInterface
     {
-        switch ($action = $action ? $action : static::shiftPath()) {
+        switch ($action = $this->shiftPath()) {
             case 'blogpost':
                 return BlogPost::handleRequest();
 

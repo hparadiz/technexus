@@ -1,9 +1,21 @@
 <?php
+/**
+ * This file is part of the Divergence package.
+ *
+ * (c) Henry Paradiz <henry.paradiz@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace technexus\Controllers;
 
 use \technexus\App as App;
 
+use Divergence\Responders\Response;
+use Divergence\Responders\TwigBuilder;
+use Psr\Http\Message\RequestInterface;
 use Divergence\IO\Database\MySQL as DB;
+use Psr\Http\Message\ResponseInterface;
 use \technexus\Models\BlogPost as BlogPost;
 
 /**
@@ -18,19 +30,19 @@ class Admin extends \Divergence\Controllers\RequestHandler
      *
      * @return void
      */
-    public static function handleRequest()
+    public function handle(RequestInterface $request): ResponseInterface
     {
-        if (!App::$Session->CreatorID) {
-            return static::login();
+        if (!App::$App->Session->CreatorID) {
+            return $this->login();
         }
         
-        switch ($action = $action ? $action : static::shiftPath()) {
+        switch ($action = $this->shiftPath()) {
             case '':
-                return static::home();
+                return $this->home();
             
             
             case 'posts':
-                return static::posts();
+                return $this->posts();
         }
     }
 
@@ -39,9 +51,9 @@ class Admin extends \Divergence\Controllers\RequestHandler
      * @link project://views/admin/login.tpl
      * @return void
      */
-    public static function login()
+    public function login(): ResponseInterface
     {
-        static::respond('admin/login.tpl');
+        return new Response(new TwigBuilder('admin/login.twig'));
     }
 
     /**
@@ -49,11 +61,11 @@ class Admin extends \Divergence\Controllers\RequestHandler
      * @link project://views/admin/home.tpl
      * @return void
      */
-    public static function home()
+    public function home(): ResponseInterface
     {
-        static::respond('admin/home.tpl', [
+        return new Response(new TwigBuilder('admin/home.twig', [
             'BlogPosts' => BlogPost::getAll(['order'=>'Created DESC']),
-        ]);
+        ]));
     }
     
     /**
@@ -63,17 +75,17 @@ class Admin extends \Divergence\Controllers\RequestHandler
      * @link project://views/admin/posts/edit.tpl
      * @return void
      */
-    public static function posts()
+    public function posts(): ResponseInterface
     {
-        switch ($action = $action ? $action : static::shiftPath()) {
+        switch ($action = $this->shiftPath()) {
             case 'new':
-                return static::newpost();
+                return $this->newpost();
         }
         
         if ($BlogPost = BlogPost::getByID($action)) {
-            static::respond('admin/posts/edit.tpl', [
+            return new Response(new TwigBuilder('admin/posts/edit.twig', [
                 'BlogPost' => $BlogPost,
-            ]);
+            ]));
         }
     }
     
@@ -83,7 +95,7 @@ class Admin extends \Divergence\Controllers\RequestHandler
      *
      * @return void
      */
-    public static function newpost()
+    public function newpost(): ResponseInterface
     {
         $BlogPost = BlogPost::create([
             'Title' => 'Untitled',

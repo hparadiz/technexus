@@ -32,7 +32,7 @@ class Blog extends \Divergence\Controllers\RequestHandler
     {
         switch ($action = $this->shiftPath()) {
             case 'admin':
-                return Admin::handleRequest();
+                return (new Admin())->handle($request);
                 
             case 'api':
                 return API::handleRequest();
