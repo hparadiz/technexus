@@ -1,0 +1,9 @@
+{% extends "blog/layouts/design.twig" %}
+
+{% block title %}{{BlogPost.Title}} | {{ parent() }}{% endblock %}
+
+{% block description %}{{ BlogPost.MainContent | replace({'\n':" ",'\t':" "}) | striptags | trim | slice(0,255) }}{% endblock %}
+
+{% block content %}
+	{% include 'blog/templates/post.twig' %}
+{% endblock %}

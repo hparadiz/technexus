@@ -1,0 +1,15 @@
+{% extends "blog/layouts/design.twig" %}
+
+{% block title %}{% if Title is defined %}{{ Title }} | {{ parent() }}{% else %}{{ parent() }}{% endif %}{% endblock %}
+
+{% block content %}
+	{% for BlogPost in BlogPosts %}
+		 {% include 'blog/templates/post.twig' %}
+	{% endfor %}
+	{% if BlogPosts|length > 10 %}
+	<nav class="blog-pagination">
+		<a class="btn btn-outline-primary" href="#">Older</a>
+		<a class="btn btn-outline-secondary disabled" href="#">Newer</a>
+	</nav>
+	{% endif %}
+{% endblock %}

@@ -8,17 +8,17 @@
   <div class="p-3">
     <h4 class="font-italic">Archives</h4>
     <ol class="list-unstyled mb-0">
-	  {foreach from=$data.Sidebar.Months item=Month}
-	  	<li><a href="/{$Month.Year}/{str_pad($Month.Month, 2, '0', 0)}/">{$Month.MonthName} {$Month.Year}</a></li>
-	  {/foreach}
+	  {% for Month in Sidebar.Months %}
+	  	<li><a href="/{{Month.Year}}/{{'%02d'|format(Month.Month)}}/">{{Month.MonthName}} {{Month.Year}}</a></li>
+	  {% endfor %}
     </ol>
   </div>
   
   <div class="p-3">
 	  <h4 class="font-italic">Topics</h4>
-	  {foreach from=$data.Sidebar.Tags item=Tag}
-	  	<a class="badge badge-secondary" href="/topics/{$Tag->Tag->Slug}">{$Tag->Tag->Tag}</a>	
-	  {/foreach}
+	  {% for Tag in Sidebar.Tags %}
+	  	<a class="badge badge-secondary" href="/topics/{{Tag.Tag.Slug}}">{{Tag.Tag.Tag}}</a>	
+	  {% endfor %}
     </ol>
   </div>
 

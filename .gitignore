@@ -2,3 +2,4 @@
 /config/db.php
 .php_cs.cache
 /media/
+.dev

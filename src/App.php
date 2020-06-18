@@ -1,8 +1,16 @@
 <?php
+/**
+ * This file is part of the Divergence package.
+ *
+ * (c) Henry Paradiz <henry.paradiz@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace technexus;
 
 use technexus\Models\User;
-use Divergence\Models\Auth\Session;
+use technexus\Models\Session;
 
 /**
  * Bootstraps site and provides some global references.
@@ -11,7 +19,7 @@ use Divergence\Models\Auth\Session;
 class App extends \Divergence\App
 {
     /** @var Session */
-    public static $Session;
+    public Session $Session;
     
     /**
      * Bootstraps the site.
@@ -22,11 +30,11 @@ class App extends \Divergence\App
      * - Checks if login attempt and tries to login
      *
      * @param string $Path
-     * @uses static::$Session
+     * @uses $this->Session
      * @return void
      * @inheritDoc
      */
-    public static function init($Path)
+    public function init($Path)
     {
         error_reporting(E_ALL & ~E_NOTICE);
         parent::init($Path);
@@ -36,9 +44,8 @@ class App extends \Divergence\App
         $tz = (new \DateTime('now', new \DateTimeZone('America/New_York')))->format('P');
         
         \Divergence\IO\Database\MySQL::nonQuery("SET time_zone='$tz';");
-        
-        static::$Session = Session::getFromRequest();
-        static::auth();
+        $this->Session = Session::getFromRequest();
+        $this->auth();
     }
     
     /**
@@ -46,10 +53,10 @@ class App extends \Divergence\App
      *
      * @return void
      */
-    public static function auth()
+    public function auth()
     {
         if ($_POST['login']['email'] && $_POST['login']['password']) {
-            static::login($_POST['login']['email'], $_POST['login']['password']);
+            $this->login($_POST['login']['email'], $_POST['login']['password']);
         }
     }
 
@@ -61,12 +68,12 @@ class App extends \Divergence\App
      * @param string $password
      * @return void
      */
-    public static function login($username, $password)
+    public function login($username, $password)
     {
         if ($User = User::getByField('Email', $username)) {
             if (password_verify($password, $User->PasswordHash)) {
-                static::$Session->CreatorID = $User->ID;
-                static::$Session->save();
+                $this->Session->CreatorID = $User->ID;
+                $this->Session->save();
                 header('Location: ' . $_SERVER['REDIRECT_URL']);
                 exit;
             }
@@ -78,10 +85,10 @@ class App extends \Divergence\App
      *
      * @return boolean
      */
-    public static function is_loggedin()
+    public function is_loggedin()
     {
-        if (static::$Session) {
-            if (static::$Session->CreatorID) {
+        if ($this->Session) {
+            if ($this->Session->CreatorID) {
                 return true;
             }
         }
@@ -93,7 +100,7 @@ class App extends \Divergence\App
      *
      * @return void
      */
-    public static function getLoadTime()
+    public function getLoadTime()
     {
         return (microtime(true)-DIVERGENCE_START);
     }

@@ -1,5 +1,16 @@
 <?php
+/**
+ * This file is part of the Divergence package.
+ *
+ * (c) Henry Paradiz <henry.paradiz@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace technexus\Controllers;
+
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * This runs from
@@ -17,7 +28,7 @@ class Main extends \Divergence\Controllers\RequestHandler
      * @uses Blog::handleRequest()
      * @return void
      */
-    public static function handleRequest()
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if (file_exists($_SERVER['DOCUMENT_ROOT'].'/site.LOCK')) {
             echo file_get_contents($_SERVER['DOCUMENT_ROOT'].'/down.html');
@@ -32,8 +43,7 @@ class Main extends \Divergence\Controllers\RequestHandler
         header('HTTP/1.0 200 OK');
         //header('X-Powered-By: PHP/' . phpversion() . ' Div Framework (http://emr.ge) Henry\'s Revision');
 
-
-        
-        return Blog::handleRequest();
+        $blog = new Blog();
+        return $blog->handle($request);
     }
 }

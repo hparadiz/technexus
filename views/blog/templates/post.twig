@@ -1,0 +1,22 @@
+
+<div class="blog-post">
+	<h2 class="blog-post-title"><a href="/
+	{{ BlogPost.Created | date('Y') }}/
+	{{ BlogPost.Created | date('m') }}/
+	{{ BlogPost.Permalink }}
+	/">{{ BlogPost.Title | raw }}</a></h2>
+	<p class="blog-post-meta">
+		{{BlogPost.Created | date('F d, Y') }} by <a href="/about">Henry</a>{% if isLoggedIn is defined %}<span class="float-right">{% if BlogPost.Status=='Draft' %}<span class="badge badge-secondary" title="Not visible to guests.">Draft</span>{% endif %}<a class="btn-sm btn" href="/admin/posts/{{ BlogPost.ID }}/"><i class="fas fa-edit"></i> Edit</a></span>{% endif %}
+		{% if BlogPost.Tags %}
+			<br>
+			<span class="blog-post-tags">
+			{% for Tag in BlogPost.Tags %}
+				<a class="badge badge-secondary" href="/topics/{{ Tag.Tag.Slug }}">{{ Tag.Tag.Tag }}</a>	
+			{% endfor %}
+			</span>
+		{% endif %}
+	</p>
+	<main>
+	{{BlogPost.MainContent | raw}}
+	</main>
+</div><!-- /.blog-post -->
