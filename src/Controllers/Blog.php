@@ -34,7 +34,7 @@ class Blog extends \Divergence\Controllers\RequestHandler
                 return (new Admin())->handle($request);
                 
             case 'api':
-                return API::handleRequest();
+                return (new API())->handle($request);
 
             case 'media':
                 return Media::handleRequest();

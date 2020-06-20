@@ -32,10 +32,10 @@ class API extends \Divergence\Controllers\RequestHandler
     {
         switch ($action = $this->shiftPath()) {
             case 'blogpost':
-                return BlogPost::handleRequest();
+                return (new BlogPost())->handle($request);
 
             case 'tags':
-                return Tag::handleRequest();
+                return (new Tag())->handle($request);
             
         }
     }
