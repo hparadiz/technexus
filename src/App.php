@@ -23,6 +23,14 @@ class App extends \Divergence\App
 {
     /** @var Session */
     public Session $Session;
+
+    public function __get($field)
+    {
+        switch ($field) {
+            case 'LoadTime':
+                return $this->getLoadTime();
+        }
+    }
     
     /**
      * Bootstraps the site.

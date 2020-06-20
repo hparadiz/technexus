@@ -11,8 +11,7 @@ namespace technexus\Controllers;
 
 use \technexus\App as App;
 use Divergence\Responders\Response;
-
-use Divergence\Responders\TwigBuilder;
+use \technexus\Responders\TwigBuilder;
 use Divergence\IO\Database\MySQL as DB;
 use Psr\Http\Message\ResponseInterface;
 use \technexus\Models\BlogPost as BlogPost;

@@ -56,7 +56,7 @@
 
     <footer class="blog-footer">
 	  <p><a href="#" onclick="window.scrollTo(0,0); return false;">Back to top</a></p>
-	  <p>Page generated in number_format(technexus\App::getLoadTime(),4) seconds.</p>
+	  <p>Page generated in {{App.LoadTime|number_format(4)}} seconds.</p>
       <p><small>© {{ "now"|date('Y') }} Henry Paradiz - All Rights Reserved</small></p>
     </footer>
 
