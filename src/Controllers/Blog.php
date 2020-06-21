@@ -37,7 +37,7 @@ class Blog extends \Divergence\Controllers\RequestHandler
                 return (new API())->handle($request);
 
             case 'media':
-                return Media::handleRequest();
+                return (new Media())->handle($request);
                 
             case 'logout':
                 return $this->logout();
