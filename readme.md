@@ -1,4 +1,4 @@
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/hparadiz/technexus/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/hparadiz/technexus/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/hparadiz/technexus/badges/quality-score.png?b=release)](https://scrutinizer-ci.com/g/hparadiz/technexus/?branch=release)
 
 # About
 A blogging content management system

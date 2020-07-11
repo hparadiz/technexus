@@ -11,7 +11,7 @@
             "version": "dev-master",
             "dist": {
                 "type": "path",
-                "url": "../divergence-cli",
+                "url": "../cli",
                 "reference": "04a525a98b19da553d83ae5cb2c41bbd848c2c42"
             },
             "require": {
@@ -44,7 +44,7 @@
             "version": "dev-develop",
             "dist": {
                 "type": "path",
-                "url": "../divergence",
+                "url": "../framework",
                 "reference": "daaf78aa4b10ad59bf52b9e31480c748ad82e8c3"
             },
             "require": {

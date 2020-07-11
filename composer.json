@@ -14,11 +14,11 @@
     "repositories": [
         {
             "type": "path",
-            "url": "../divergence/"
+            "url": "../framework/"
         },
         {
             "type": "path",
-            "url": "../divergence-cli/"
+            "url": "../cli/"
         }
     ],
     "authors": [
