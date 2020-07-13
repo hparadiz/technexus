@@ -74,11 +74,8 @@ class Blog extends \Divergence\Controllers\RequestHandler
                 return $this->post($year, $month, $permalink);
                 
             default:
-
-                
-                // code for tag(s)
-                // [tag+[tag]]
-                break;
+                $error = new Errors();
+                return $error->handle($request);
         }
     }
 
