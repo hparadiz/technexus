@@ -15,7 +15,8 @@ class Errors extends \Divergence\Controllers\RequestHandler
     public function handlePageNotFound()
     {
         header("HTTP/1.0 404 Not Found");
-        
-        return $this->respond(new TwigBuilder('404.twig'));
+        $this->responseBuilder = TwigBuilder::class;
+
+        return $this->respond('404.twig');
     }
 }
