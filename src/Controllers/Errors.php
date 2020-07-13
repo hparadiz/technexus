@@ -7,12 +7,12 @@ use Psr\Http\Message\ResponseInterface;
 
 class Errors extends \Divergence\Controllers\RequestHandler
 {
-    public function handle(RequestInterface $requestInterface): ResponseInterface
+    public function handle(RequestInterface $request): ResponseInterface
     {
-        return $this->handlePageNotFound();
+        return $this->handlePageNotFound($request);
     }
     
-    public function handlePageNotFound($data=[])
+    public function handlePageNotFound(RequestInterface $request, $data=[])
     {
         header("HTTP/1.0 404 Not Found");
         $this->responseBuilder = TwigBuilder::class;
