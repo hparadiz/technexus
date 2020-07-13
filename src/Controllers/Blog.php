@@ -75,7 +75,9 @@ class Blog extends \Divergence\Controllers\RequestHandler
                 
             default:
                 $error = new Errors();
-                return $error->handle($request);
+                return $error->handlePageNotFound($request, [
+                    'Sidebar' => $this->getSidebarData()
+                ]);
         }
     }
 
