@@ -41,6 +41,9 @@ class Blog extends \Divergence\Controllers\RequestHandler
                 
             case 'logout':
                 return $this->logout();
+
+            case '.rss':
+                    return (new RSS())->handle($request);
                     
             case '':
                 return $this->home();
@@ -121,10 +124,9 @@ class Blog extends \Divergence\Controllers\RequestHandler
      */
     public function home(): ResponseInterface
     {
-        $BlogPosts = BlogPost::getAllByWhere(array_merge($this->conditions(), [
-            
-        ]), [
+        $BlogPosts = BlogPost::getAllByWhere(array_merge($this->conditions(), []), [
             'order' =>  'Created DESC',
+            'limit' => 10,
         ]);
         
         return new Response(new TwigBuilder('blog/posts.twig', [
