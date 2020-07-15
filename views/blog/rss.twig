@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
   {#<category term=" reddit.com" label="r/ reddit.com"/>#}
-  <updated>{{BlogPosts.0.Created | date('U') }} 2020-07-15T09:00:41+00:00</updated>
-  <id>/.rss</id>
+  <updated>{{BlogPosts.0.Created | date('Y-m-d\TH:i:sP') }}</updated>
+  <id>https://{{Hostname}}/.rss</id>
   <link rel="self" href="https://{{Hostname}}/.rss" type="application/atom+xml"/>
   <link rel="alternate" href="https://{{Hostname}}/" type="text/html"/>
   <title>Technexus</title>
@@ -12,12 +12,14 @@
         <name>Henry Paradiz</name>
         <uri>https://{{Hostname}}</uri>
         </author>
+        {% if BlogPost.Tags %}
         <category term="{% for Tag in BlogPost.Tags %}{{ Tag.Tag.Tag }} {% endfor %}" label="{% for Tag in BlogPost.Tags %}{{ Tag.Tag.Tag }} {% endfor %}"/>
+        {% endif %}
         <content type="html">{{BlogPost.MainContent|e('html')}}</content>
-        <id>{{BlogPost.ID}}</id>
+        <id>https://{{Hostname}}/{{ BlogPost.Created | date('Y') }}/{{ BlogPost.Created | date('m') }}/{{ BlogPost.Permalink }}/</id>
         {#<media:thumbnail url="https://a.thumbs.redditmedia.com/l77g1OYo4oN-dv7i6N9YBnrvCn7tJ1YWLYYKy1TK5r8.jpg"/>#}
         <link href="https://{{Hostname}}/{{ BlogPost.Created | date('Y') }}/{{ BlogPost.Created | date('m') }}/{{ BlogPost.Permalink }}/"/>
-        <updated>{{BlogPost.Created | date('U') }}</updated>
+        <updated>{{BlogPost.Created | date('Y-m-d\TH:i:sP') }}</updated>
         <title>{{BlogPost.Title}}</title>
     </entry>
   {% endfor %}
