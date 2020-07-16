@@ -6,11 +6,11 @@
   </div>
 
   <div class="p-3">
-    <h4 class="font-italic">Archives</h4>
+    <h4 class="font-italic">Source Code</h4>
     <ol class="list-unstyled mb-0">
-	  {% for Month in Sidebar.Months %}
-	  	<li><a href="/{{Month.Year}}/{{'%02d'|format(Month.Month)}}/">{{Month.MonthName}} {{Month.Year}}</a></li>
-	  {% endfor %}
+      <li><a href="https://github.com/hparadiz/technexus">This Website</a></li>
+      <li><a href="https://github.com/divergence/framework">Divergence Framework</a></li>
+      <li><a href="https://github.com/hparadiz/henshin">NodeJS Slack Bot</a></li>
     </ol>
   </div>
   
@@ -27,6 +27,16 @@
     <ol class="list-unstyled">
       <li><a href="https://github.com/hparadiz">GitHub</a></li>
       <li><a href="http://www.linkedin.com/in/henryparadiz">LinkedIn</a></li>
+      <li><a href="https://twitter.com/hparadiz">Twitter</a></li>
+    </ol>
+  </div>
+
+  <div class="p-3">
+    <h4 class="font-italic">Archives</h4>
+    <ol class="list-unstyled mb-0">
+	  {% for Month in Sidebar.Months %}
+	  	<li><a href="/{{Month.Year}}/{{'%02d'|format(Month.Month)}}/">{{Month.MonthName}} {{Month.Year}}</a></li>
+	  {% endfor %}
     </ol>
   </div>
 </aside><!-- /.blog-sidebar -->
