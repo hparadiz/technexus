@@ -13,5 +13,5 @@ class BlogPost extends \Divergence\Controllers\RecordsRequestHandler
 {
     use Permissions\LoggedIn;
     
-    public $recordClass = 'technexus\\Models\\BlogPost';
+    public static $recordClass = 'technexus\\Models\\BlogPost';
 }

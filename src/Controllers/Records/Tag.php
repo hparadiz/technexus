@@ -13,5 +13,5 @@ class Tag extends \Divergence\Controllers\RecordsRequestHandler
 {
     //use Permissions\LoggedIn;
     
-    public $recordClass = 'technexus\\Models\\Tag';
+    public static $recordClass = 'technexus\\Models\\Tag';
 }
