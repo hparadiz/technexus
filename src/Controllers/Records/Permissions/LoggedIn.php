@@ -11,33 +11,33 @@ use \Divergence\Models\ActiveRecord as ActiveRecord;
  */
 trait LoggedIn
 {
-    public static function is()
+    public function is()
     {
-        return App::is_loggedin();
+        return App::$App->is_loggedin();
     }
     
-    public static function checkBrowseAccess($arguments)
+    public function checkBrowseAccess($arguments)
     {
-        return static::is();
+        return $this->is();
     }
 
-    public static function checkReadAccess(ActiveRecord $Record)
+    public function checkReadAccess(ActiveRecord $Record)
     {
-        return static::is();
+        return $this->is();
     }
     
-    public static function checkWriteAccess(ActiveRecord $Record)
+    public function checkWriteAccess(ActiveRecord $Record)
     {
-        return static::is();
+        return $this->is();
     }
 
-    public static function checkUploadAccess()
+    public function checkUploadAccess()
     {
-        return static::is();
+        return $this->is();
     }
     
-    public static function checkAPIAccess()
+    public function checkAPIAccess()
     {
-        return static::is();
+        return $this->is();
     }
 }
