@@ -41,7 +41,7 @@ var editposts = {
 				'//cdnjs.cloudflare.com/ajax/libs/prism/1.13.0/themes/prism-twilight.min.css'
 			],
 			plugins: [
-				'advlist autolink lists link image charmap print preview anchor',
+				'advlist autolink lists link image charmap print preview anchor ',
 				'searchreplace visualblocks fullscreen',
 				'insertdatetime media table code codesample wordcount save'
 			],
@@ -64,6 +64,7 @@ var editposts = {
 			],
 			toolbar: 'save | undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | fontsizeselect',
 			body_class: 'blog-main',
+			extended_valid_elements: 'script[*]',
 			relative_urls : false,
 			remove_script_host : false,
 			convert_urls : false,
