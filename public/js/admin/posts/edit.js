@@ -39,7 +39,7 @@ var editposts = {
 				'https://fonts.googleapis.com/css?family=Playfair+Display:700,900',
 				//'//cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/themes/prism.css',
 				'/css/prism-vsc-dark-plus.css',
-				'//cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/themes/prism-twilight.min.css'
+				//'//cdnjs.cloudflare.com/ajax/libs/prism/1.20.0/themes/prism-twilight.min.css'
 			],
 			plugins: [
 				'advlist autolink lists link image charmap print preview anchor ',
