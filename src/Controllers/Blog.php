@@ -224,7 +224,8 @@ class Blog extends \Divergence\Controllers\RequestHandler
                 $BlogPosts = BlogPost::getAllByQuery(
                     "SELECT `bp`.* FROM `%s` `bp`
 					INNER JOIN %s as `t` ON `t`.`BlogPostID`=`bp`.`ID`
-					WHERE `t`.`TagID`='%s' AND $where",
+                    WHERE `t`.`TagID`='%s' AND $where
+                    ORDER BY `Created` DESC",
                     [
                         BlogPost::$tableName,
                         PostTags::$tableName,
