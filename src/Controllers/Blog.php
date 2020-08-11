@@ -23,6 +23,13 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class Blog extends \Divergence\Controllers\RequestHandler
 {
+    const LIMIT = 10;
+    public string $path;
+    public function __construct()
+    {
+        $this->path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    }
+
     /**
      * Handles main routing
      * @return mixed
@@ -46,7 +53,7 @@ class Blog extends \Divergence\Controllers\RequestHandler
                     return (new RSS())->handle($request);
                     
             case '':
-                return $this->home();
+                return $this->home($request);
                 break;
 
             case 'topics':
@@ -119,20 +126,63 @@ class Blog extends \Divergence\Controllers\RequestHandler
     /**
      * Displays main home page.
      *
+     * @param ServerRequestInterface $request
+     *
      * @link project://views/blog/posts.twig
      * @link project://views/templates/post.twig
      */
-    public function home(): ResponseInterface
+    public function home(ServerRequestInterface $request): ResponseInterface
     {
-        $BlogPosts = BlogPost::getAllByWhere(array_merge($this->conditions(), []), [
+        $get = $request->getQueryParams();
+
+        // conditions
+        $conditions = [];
+        if (isset($get['before'])) {
+            $conditions[] = sprintf('Created < FROM_UNIXTIME(%d)', intval($get['before']));
+        }
+
+        if (isset($get['after'])) {
+            $conditions[] = sprintf('Created >= FROM_UNIXTIME(%d)', intval($get['after']));
+        }
+
+        // pull data
+        $BlogPosts = BlogPost::getAllByWhere(array_merge($this->conditions(), $conditions), [
             'order' =>  'Created DESC',
-            'limit' => 10,
+            'limit' => static::LIMIT,
+            'calcFoundRows' => true,
         ]);
+        $total = DB::foundRows();
+        $count = count($BlogPosts);
         
-        return new Response(new TwigBuilder('blog/posts.twig', [
+        
+        $data = [
             'BlogPosts' => $BlogPosts,
+            'Limit' => static::LIMIT,
+            'Total' => $total,
+            'path' => $this->path,
             'Sidebar' => $this->getSidebarData(),
-        ]));
+        ];
+        
+        /**
+         * Show "Go Back" button only if the results are >= limit
+         * or
+         * If query param after is present
+         */
+        if (($count === static::LIMIT || $total > static::LIMIT) || isset($get['after'])) {
+            $data['before'] = $BlogPosts[$count-1]->Created;
+        }
+
+        /**
+         * Show "Go Forward" button if before query param is present
+         */
+        if (isset($get['before'])) {
+            $data['after'] = $BlogPosts[0]->Created;
+        }
+
+        if (isset($get['after'])) {
+        }
+
+        return new Response(new TwigBuilder('blog/posts.twig', $data));
     }
     
     /**
@@ -154,6 +204,8 @@ class Blog extends \Divergence\Controllers\RequestHandler
         return new Response(new TwigBuilder('blog/posts.twig', [
             'BlogPosts' => $BlogPosts,
             'Sidebar' => $this->getSidebarData(),
+            'Limit' => static::LIMIT,
+            'Total' => DB::foundRows(),
         ]));
     }
     
@@ -178,6 +230,8 @@ class Blog extends \Divergence\Controllers\RequestHandler
         return new Response(new TwigBuilder('blog/posts.twig', [
             'BlogPosts' => $BlogPosts,
             'Sidebar' => $this->getSidebarData(),
+            'Limit' => static::LIMIT,
+            'Total' => DB::foundRows(),
         ]));
     }
     
@@ -202,6 +256,8 @@ class Blog extends \Divergence\Controllers\RequestHandler
         return new Response(new TwigBuilder('blog/post.twig', [
             'BlogPost' => $BlogPost,
             'Sidebar' => $this->getSidebarData(),
+            'Limit' => static::LIMIT,
+            'Total' => DB::foundRows(),
         ]));
     }
     
@@ -222,7 +278,7 @@ class Blog extends \Divergence\Controllers\RequestHandler
             }
             if ($Tag = \technexus\Models\Tag::getByField('Slug', urldecode($this->shiftPath()))) {
                 $BlogPosts = BlogPost::getAllByQuery(
-                    "SELECT `bp`.* FROM `%s` `bp`
+                    "SELECT SQL_CALC_FOUND_ROWS `bp`.* FROM `%s` `bp`
 					INNER JOIN %s as `t` ON `t`.`BlogPostID`=`bp`.`ID`
                     WHERE `t`.`TagID`='%s' AND $where
                     ORDER BY `Created` DESC",
@@ -237,6 +293,8 @@ class Blog extends \Divergence\Controllers\RequestHandler
                     'Title' => $Tag->Tag,
                     'BlogPosts' => $BlogPosts,
                     'Sidebar' => static::getSidebarData(),
+                    'Limit' => static::LIMIT,
+                    'Total' => DB::foundRows(),
                 ]));
             }
         }
