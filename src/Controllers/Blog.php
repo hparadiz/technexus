@@ -160,6 +160,7 @@ class Blog extends \Divergence\Controllers\RequestHandler
             'Limit' => static::LIMIT,
             'Total' => $total,
             'path' => $this->path,
+            'isLoggedIn' => App::$App->is_loggedin(),
             'Sidebar' => $this->getSidebarData(),
         ];
         
@@ -203,6 +204,7 @@ class Blog extends \Divergence\Controllers\RequestHandler
         
         return new Response(new TwigBuilder('blog/posts.twig', [
             'BlogPosts' => $BlogPosts,
+            'isLoggedIn' => App::$App->is_loggedin(),
             'Sidebar' => $this->getSidebarData(),
             'Limit' => static::LIMIT,
             'Total' => DB::foundRows(),
@@ -229,6 +231,7 @@ class Blog extends \Divergence\Controllers\RequestHandler
         
         return new Response(new TwigBuilder('blog/posts.twig', [
             'BlogPosts' => $BlogPosts,
+            'isLoggedIn' => App::$App->is_loggedin(),
             'Sidebar' => $this->getSidebarData(),
             'Limit' => static::LIMIT,
             'Total' => DB::foundRows(),
@@ -255,6 +258,7 @@ class Blog extends \Divergence\Controllers\RequestHandler
         
         return new Response(new TwigBuilder('blog/post.twig', [
             'BlogPost' => $BlogPost,
+            'isLoggedIn' => App::$App->is_loggedin(),
             'Sidebar' => $this->getSidebarData(),
             'Limit' => static::LIMIT,
             'Total' => DB::foundRows(),
@@ -292,7 +296,8 @@ class Blog extends \Divergence\Controllers\RequestHandler
                 return new Response(new TwigBuilder('blog/posts.twig', [
                     'Title' => $Tag->Tag,
                     'BlogPosts' => $BlogPosts,
-                    'Sidebar' => static::getSidebarData(),
+                    'isLoggedIn' => App::$App->is_loggedin(),
+                    'Sidebar' => $this->getSidebarData(),
                     'Limit' => static::LIMIT,
                     'Total' => DB::foundRows(),
                 ]));

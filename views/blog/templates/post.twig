@@ -6,7 +6,7 @@
 	{{ BlogPost.Permalink }}
 	/">{{ BlogPost.Title | raw }}</a></h2>
 	<p class="blog-post-meta">
-		{{BlogPost.Created | date('F d, Y') }} by <a href="/about">Henry</a>{% if isLoggedIn is defined %}<span class="float-right">{% if BlogPost.Status=='Draft' %}<span class="badge badge-secondary" title="Not visible to guests.">Draft</span>{% endif %}<a class="btn-sm btn" href="/admin/posts/{{ BlogPost.ID }}/"><i class="fas fa-edit"></i> Edit</a></span>{% endif %}
+		{{BlogPost.Created | date('F d, Y') }} by <a href="/about">Henry</a>{% if isLoggedIn is defined %}{% if isLoggedIn %}<span class="float-right">{% if BlogPost.Status=='Draft' %}<span class="badge badge-secondary" title="Not visible to guests.">Draft</span>{% endif %}<a class="btn-sm btn" href="/admin/posts/{{ BlogPost.ID }}/"><i class="fas fa-edit"></i> Edit</a></span>{% endif %}{% endif %}
 		{% if BlogPost.Tags %}
 			<br>
 			<span class="blog-post-tags">
