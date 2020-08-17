@@ -85,6 +85,7 @@ class Admin extends \Divergence\Controllers\RequestHandler
         if ($BlogPost = BlogPost::getByID($action)) {
             return new Response(new TwigBuilder('admin/posts/edit.twig', [
                 'BlogPost' => $BlogPost,
+                'TagTypeAhead' => \technexus\Models\Tag::getTypeahead()
             ]));
         }
     }

@@ -56,7 +56,7 @@ class BlogPost extends \Divergence\Models\Model
         foreach ($this->Tags as $Tag) {
             $Values[] = $Tag->Tag->Tag;
         }
-        return implode($Values, ',');
+        return implode(',', $Values);
     }
     
     public function saveTags($tags)

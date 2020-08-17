@@ -42,6 +42,6 @@ class Tag extends \Divergence\Models\Model
         foreach ($Tags as $Tag) {
             $Values[] = $Tag->Tag;
         }
-        return "'".implode($Values, "','")."'";
+        return "'".implode("','", $Values)."'";
     }
 }

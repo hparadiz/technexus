@@ -7,7 +7,7 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/tinymce/5.4.1/tinymce.min.js" integrity="sha512-c46AnRoKXNp7Sux2K56XDjljfI5Om/v1DvPt7iRaOEPU5X+KZt8cxzN3fFzemYC6WCZRhmpSlZvPA1pttfO9DQ==" crossorigin="anonymous"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.0/moment.min.js" integrity="sha256-DELCOgoVsZqjT78lDC7zcX+YFp+PEjh1k23mBMoDBwo=" crossorigin="anonymous"></script>
 	<link href="//www.tinymce.com/css/codepen.min.css" rel="stylesheet">
-	<link href="/css/editor.css?{time()}" rel="stylesheet">
+	<link href="/css/editor.css?{{"now"|date('U')}}" rel="stylesheet">
 	<style>
 		body { padding: 0 !important; }
 	</style>
@@ -39,15 +39,15 @@
 			</div>
 			<div class="mb-3">
 				<label for="tags">Tags</label>
-				<input type="text" class="form-control" name="Tags" value="{#BlogPost.getTags()#}">
+				<input type="text" class="form-control" name="Tags" value="{{BlogPost.getTags()}}">
 			</div>
-			<small id="lastEdit" class="form-text text-muted">Last edited {#date_format BlogPost.Edited "%m/%d/%y %k:%M %p"#}<div class="loader float-right" id="loader-1" style="display: none;"></div></small>
+			<small id="lastEdit" class="form-text text-muted">Last edited {{BlogPost.Created | date('F d, Y g:i a') }}<div class="loader float-right" id="loader-1" style="display: none;"></div></small>
 			<hr class="mb-4">
 			<button class="btn btn-primary btn-lg btn-block" type="submit">Save</button>
 		</form>
 	</div>
 	<script>
-		document.typeAheadTags = [{\technexus\Models\Tag::getTypeahead()}];
+		document.typeAheadTags = [{{TagTypeAhead|raw}}];
 	</script>
 {% endblock %}
 
