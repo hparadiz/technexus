@@ -1,7 +1,6 @@
 language: php
 php:
-  - '7.1'
-  - '7.2'
+  - '7.4'
 
 before_install:
   # removes stuff we only need for local
