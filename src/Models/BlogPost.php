@@ -58,7 +58,55 @@ class BlogPost extends \Divergence\Models\Model
         }
         return implode(',', $Values);
     }
+
+    public function __get($field)
+    {
+        switch ($field) {
+            case 'ShareImage':
+                return $this->getShareImage();
+            case 'InternalPermaLink':
+                return $this->getInternalPermaLink();
+            case 'ExternalPermaLink':
+                    return $this->getExternalPermaLink(true);
+
+            default:
+                return parent::__get($field);
+        }
+    }
+
+    public function getPermaLink($hostname=false)
+    {
+        return ($hostname?'https://'.$_SERVER['SERVER_NAME']:null) .
+        '/'.date('Y', $this->Created) . '/' . date('m', $this->Created).'/'.$this->Permalink.'/';
+    }
     
+    public function getInternalPermaLink()
+    {
+        return $this->getPermaLink();
+    }
+
+    public function getExternalPermaLink()
+    {
+        return $this->getPermaLink(true);
+    }
+
+    /**
+     * Quick and dirty
+     * TODO: Change admin to let you select this image
+     *
+     * @return string|false
+     */
+    public function getShareImage()
+    {
+        preg_match("/\/media\/([0-9]*)/", $this->MainContent, $images);
+        
+        if (ctype_digit($images[1])) {
+            return 'https://'.$_SERVER['SERVER_NAME'].'/thumbnail/'.$images[1].'/500x500/cropped/';
+        } else {
+            return false;
+        }
+    }
+
     public function saveTags($tags)
     {
         $SeenTags = [];
@@ -85,13 +133,13 @@ class BlogPost extends \Divergence\Models\Model
         
         
         // if a tag was not submitted with the save input we can assume it was deleted
-        $rmQuery = 'DELETE FROM `' . PostTags::$tableName . "` WHERE `BlogPostID`='{$this->ID}' AND `TagID` NOT IN (" . implode(',', $SeenTags) . ")";
+        $rmQuery = "DELETE FROM `" . PostTags::$tableName . "` WHERE `BlogPostID`='{$this->ID}' AND `TagID` NOT IN (" . implode(',', $SeenTags) . ")";
         \Divergence\IO\Database\MySQL::nonQuery($rmQuery);
     }
     
     public function clearTags()
     {
-        $rmQuery = 'DELETE FROM `' . PostTags::$tableName . "` WHERE `BlogPostID`='{$this->ID}'";
+        $rmQuery = "DELETE FROM `" . PostTags::$tableName . "` WHERE `BlogPostID`='{$this->ID}'";
         \Divergence\IO\Database\MySQL::nonQuery($rmQuery);
     }
     
