@@ -4,6 +4,21 @@
 
 {% block description %}{{ BlogPost.MainContent | replace({'\n':" ",'\t':" "}) | striptags | trim | slice(0,255) }}{% endblock %}
 
+{% block meta %}
+<meta property="og:title" content="{{ BlogPost.Title }}" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="{{ BlogPost.ExternalPermaLink }}" />
+<meta property="og:image" content="{{ BlogPost.ShareImage}}" />
+<meta content='article' property='og:type'/>
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@0xAkuKun">
+<meta name="twitter:creator" content="@0xAkuKun">
+<meta name="twitter:title" content="{{ BlogPost.Title }}">
+<meta name="twitter:description" content="{{ BlogPost.MainContent | replace({'\n':" ",'\t':" "}) | striptags | trim | slice(0,255) }}">
+<meta name="twitter:image" content="{{ BlogPost.ShareImage}} ">
+{% endblock %}
+
 {% block content %}
 	{% include 'blog/templates/post.twig' %}
 {% endblock %}
