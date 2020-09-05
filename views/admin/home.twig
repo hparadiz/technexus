@@ -1,12 +1,18 @@
 {% extends "/admin/design.twig" %}
 
 {% block content %}
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item" aria-current="page"><a href="/">View Front Page</a></li>
+		</ol>
+	</nav>
+
 	<div class="row">
 		<div class="col-11">
 			<h5>Blog Posts</h5>
 		</div>
 		<div class="col-1">
-		<a class="btn-sm btn-primary" href="/admin/posts/new"><i class="fas fa-edit"></i> New</a>
+		<a class="btn-sm btn-primary" href="/admin/posts/new" style="white-space: nowrap;"><i class="fas fa-edit"></i> New</a>
 		</div>
 	</div>
 	<ul class="list-group">
