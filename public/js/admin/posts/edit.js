@@ -44,7 +44,7 @@ var editposts = {
 			plugins: [
 				'advlist autolink lists link image charmap print preview anchor ',
 				'searchreplace visualblocks fullscreen',
-				'insertdatetime media table code codesample wordcount save'
+				'insertdatetime media table code codesample wordcount save autosave'
 			],
 			codesample_languages: [
 				{text: 'HTML/XML', value: 'markup'},
@@ -63,7 +63,7 @@ var editposts = {
 				{text: 'SQL', value: 'sql'},
 				{text: 'Apache Config', value: 'apacheconf'}
 			],
-			toolbar: 'save | undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | fontsizeselect',
+			toolbar: 'save | undo redo | restoredraft | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | fontsizeselect',
 			body_class: 'blog-main',
 			extended_valid_elements: 'script[*]',
 			relative_urls : false,
@@ -88,6 +88,7 @@ var editposts = {
 				tinyMCE.triggerSave();
 				$(this.selectors.form).trigger('submit');
 			},
+			autosave_restore_when_empty: true
 		});
 
 		$('input#title').on('change', (e) => {
