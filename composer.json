@@ -21,6 +21,16 @@
 		    "technexus\\": "src"
 	    }
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../framework",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "prefer-stable": true,
     "minimum-stability": "dev",
     "scripts": {
 	    "fix-code": "php-cs-fixer fix"

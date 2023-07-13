@@ -3,7 +3,6 @@ namespace technexus\Models;
 
 class Tag extends \Divergence\Models\Model
 {
-    //use \Divergence\Models\Versioning;
     use \Divergence\Models\Relations;
     
     // support subclassing
@@ -11,21 +10,12 @@ class Tag extends \Divergence\Models\Model
     public static $defaultClass = __CLASS__;
     public static $subClasses = [__CLASS__];
 
-
-    // ActiveRecord configuration
     public static $tableName = 'tags';
     public static $singularNoun = 'tag';
     public static $pluralNoun = 'tags';
     
-    // versioning
-    //static public $historyTable = 'test_history';
-    //static public $createRevisionOnDestroy = true;
-    //static public $createRevisionOnSave = true;
-    
-    public static $fields = [
-        'Tag',
-        'Slug',
-    ];
+    protected $Tag;
+    protected $Slug;
 
     public static $validators = [
         [

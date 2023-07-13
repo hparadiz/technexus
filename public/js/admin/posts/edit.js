@@ -88,7 +88,8 @@ var editposts = {
 				tinyMCE.triggerSave();
 				$(this.selectors.form).trigger('submit');
 			},
-			autosave_restore_when_empty: true
+			autosave_restore_when_empty: true,
+			autosave_retention: '60m'
 		});
 
 		$('input#title').on('change', (e) => {
