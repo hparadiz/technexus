@@ -21,15 +21,6 @@
 		    "technexus\\": "src"
 	    }
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../framework",
-            "options": {
-                "symlink": true
-            }
-        }
-    ],
     "prefer-stable": true,
     "minimum-stability": "dev",
     "scripts": {

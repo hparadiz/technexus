@@ -25,8 +25,11 @@ class Admin extends \Divergence\Controllers\RequestHandler
 {
     /**
      * Routes
-     * @link https://technexu.us/admin/
-     * @link https://technexu.us/admin/posts/
+     * @link https://technex.us/admin/
+     * @link https://technex.us/admin/posts/
+     * @link https://technex.us/admin/users/
+     * @link https://technex.us/admin/media/
+     * @link https://technex.us/admin/backups/
      *
      * @return void
      */
@@ -40,16 +43,23 @@ class Admin extends \Divergence\Controllers\RequestHandler
             case '':
                 return $this->home();
             
-            
             case 'posts':
                 return $this->posts();
+
+            case 'users':
+                return $this->users();
+            
+            case 'media':
+                return $this->media();
+
+            case 'backups':
+                return $this->backups();
         }
     }
 
     /**
      * Displays login
      * @link project://views/admin/login.tpl
-     * @return void
      */
     public function login(): ResponseInterface
     {
@@ -59,7 +69,6 @@ class Admin extends \Divergence\Controllers\RequestHandler
     /**
      * Display admin home page
      * @link project://views/admin/home.tpl
-     * @return void
      */
     public function home(): ResponseInterface
     {
@@ -69,11 +78,10 @@ class Admin extends \Divergence\Controllers\RequestHandler
     }
     
     /**
-     * Routes /admin/posts/new to static::newpost
+     * Routes /admin/posts/new to $this->newpost
      * Handles route /admin/posts/$id by displaying editor
      *
      * @link project://views/admin/posts/edit.tpl
-     * @return void
      */
     public function posts(): ResponseInterface
     {
@@ -106,5 +114,41 @@ class Admin extends \Divergence\Controllers\RequestHandler
         
         header('Location: /admin/posts/'.$BlogPost->ID);
         exit;
+    }
+
+    /**
+     * Routes /admin/users/
+     *
+     * @link project://views/admin/users.tpl
+     */
+    public function users(): ResponseInterface
+    {
+        return new Response(new TwigBuilder('admin/users.twig', [
+            'Users' => \technexus\Models\User::getAll(),
+        ]));
+    }
+
+    /**
+     * Routes /admin/media/
+     *
+     * @link project://views/admin/media.tpl
+     */
+    public function media(): ResponseInterface
+    {
+        return new Response(new TwigBuilder('admin/media.twig', [
+            'Media' => \Divergence\Models\Media\Media::getAll(),
+        ]));
+    }
+
+    /**
+     * Routes /admin/backups/
+     *
+     * @link project://views/admin/backups.tpl
+     */
+    public function backups(): ResponseInterface
+    {
+        return new Response(new TwigBuilder('admin/backups.twig', [
+            //'Users' => \technexus\Models\User::getAll(),
+        ]));
     }
 }

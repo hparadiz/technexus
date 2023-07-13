@@ -87,7 +87,7 @@ class Blog extends \Divergence\Controllers\RequestHandler
                 return $this->post($year, $month, $permalink??null);
                 
             default:
-                $this->notfound();
+                return $this->notfound();
         }
     }
 

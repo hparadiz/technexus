@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6c710f6db289754471b01b0010fb5d53",
+    "content-hash": "4d58de8f87f9ee3c9abacf3099bbd4e2",
     "packages": [
         {
             "name": "divergence/cli",
@@ -57,11 +57,17 @@
         },
         {
             "name": "divergence/divergence",
-            "version": "dev-develop",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Divergence/framework.git",
+                "reference": "bd73748148463f5042c6b7544992f66a9fbb8e1e"
+            },
             "dist": {
-                "type": "path",
-                "url": "../framework",
-                "reference": "f3e3d348cdb16659618654124c82bf40f496e262"
+                "type": "zip",
+                "url": "https://api.github.com/repos/Divergence/framework/zipball/bd73748148463f5042c6b7544992f66a9fbb8e1e",
+                "reference": "bd73748148463f5042c6b7544992f66a9fbb8e1e",
+                "shasum": ""
             },
             "require": {
                 "filp/whoops": "*",
@@ -89,20 +95,7 @@
                     "Divergence\\": "src"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Divergence\\Tests\\": "tests/Divergence",
-                    "Divergence\\Tests\\MockSite\\": "tests/MockSite"
-                }
-            },
-            "scripts": {
-                "fix-code": [
-                    "php-cs-fixer fix"
-                ],
-                "test": [
-                    "vendor/bin/phpunit --coverage-clover build/logs/clover.xml"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -128,25 +121,23 @@
                 "orm"
             ],
             "support": {
-                "issues": "https://github.com/Divergence/framework/issues"
+                "issues": "https://github.com/Divergence/framework/issues",
+                "source": "https://github.com/Divergence/framework/tree/v2.0.0"
             },
-            "transport-options": {
-                "symlink": true,
-                "relative": true
-            }
+            "time": "2023-07-13T21:05:44+00:00"
         },
         {
             "name": "filp/whoops",
-            "version": "2.15.2",
+            "version": "2.15.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filp/whoops.git",
-                "reference": "aac9304c5ed61bf7b1b7a6064bf9806ab842ce73"
+                "reference": "c83e88a30524f9360b11f585f71e6b17313b7187"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filp/whoops/zipball/aac9304c5ed61bf7b1b7a6064bf9806ab842ce73",
-                "reference": "aac9304c5ed61bf7b1b7a6064bf9806ab842ce73",
+                "url": "https://api.github.com/repos/filp/whoops/zipball/c83e88a30524f9360b11f585f71e6b17313b7187",
+                "reference": "c83e88a30524f9360b11f585f71e6b17313b7187",
                 "shasum": ""
             },
             "require": {
@@ -196,7 +187,7 @@
             ],
             "support": {
                 "issues": "https://github.com/filp/whoops/issues",
-                "source": "https://github.com/filp/whoops/tree/2.15.2"
+                "source": "https://github.com/filp/whoops/tree/2.15.3"
             },
             "funding": [
                 {
@@ -204,7 +195,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-04-12T12:00:00+00:00"
+            "time": "2023-07-13T12:00:00+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
