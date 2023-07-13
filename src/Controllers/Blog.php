@@ -25,6 +25,7 @@ class Blog extends \Divergence\Controllers\RequestHandler
 {
     const LIMIT = 10;
     public string $path;
+    protected ServerRequestInterface $request;
     public function __construct()
     {
         $this->path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -36,6 +37,7 @@ class Blog extends \Divergence\Controllers\RequestHandler
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $this->request = $request;
         switch ($action = $this->shiftPath()) {
             case 'admin':
                 return (new Admin())->handle($request);
@@ -69,25 +71,23 @@ class Blog extends \Divergence\Controllers\RequestHandler
                     $month = $this->shiftPath();
                 }
                 // single post
-                if ($this->peekPath()) {
-                    $permalink = $this->shiftPath();
-                }
+                $permalink = $this->peekPath()?$this->shiftPath():null;
                 
-                if (!$permalink && !$month) {
+                // yearly digest
+                if (empty($permalink) && empty($month)) {
                     return $this->year($year);
                 }
                 
-                if (!$permalink) {
+                // monthly digest
+                if (empty($permalink)) {
                     return $this->month($year, $month);
                 }
                 
-                return $this->post($year, $month, $permalink);
+                // specific single post
+                return $this->post($year, $month, $permalink??null);
                 
             default:
-                $error = new Errors();
-                return $error->handlePageNotFound($request, [
-                    'Sidebar' => $this->getSidebarData()
-                ]);
+                return $this->notfound();
         }
     }
 
@@ -201,14 +201,17 @@ class Blog extends \Divergence\Controllers\RequestHandler
             'order' =>  'Created DESC',
         ]);
         
-        
-        return new Response(new TwigBuilder('blog/posts.twig', [
-            'BlogPosts' => $BlogPosts,
-            'isLoggedIn' => App::$App->is_loggedin(),
-            'Sidebar' => $this->getSidebarData(),
-            'Limit' => static::LIMIT,
-            'Total' => DB::foundRows(),
-        ]));
+        if (!empty($BlogPosts)) {
+            return new Response(new TwigBuilder('blog/posts.twig', [
+                'BlogPosts' => $BlogPosts,
+                'isLoggedIn' => App::$App->is_loggedin(),
+                'Sidebar' => $this->getSidebarData(),
+                'Limit' => static::LIMIT,
+                'Total' => DB::foundRows(),
+            ]));
+        } else {
+            return $this->notFound();
+        }
     }
     
     /**
@@ -218,9 +221,9 @@ class Blog extends \Divergence\Controllers\RequestHandler
      * @param string $month
      * @link project://views/blog/posts.twig
      * @link project://views/templates/post.twig
-     * @return void
+     * @return Response
      */
-    public function month($year, $month)
+    public function month($year, $month): Response
     {
         $BlogPosts = BlogPost::getAllByWhere(array_merge($this->conditions(), [
             sprintf('YEAR(`Created`)=%d', $year),
@@ -228,14 +231,19 @@ class Blog extends \Divergence\Controllers\RequestHandler
         ]), [
             'order' =>  'Created DESC',
         ]);
-        
-        return new Response(new TwigBuilder('blog/posts.twig', [
-            'BlogPosts' => $BlogPosts,
-            'isLoggedIn' => App::$App->is_loggedin(),
-            'Sidebar' => $this->getSidebarData(),
-            'Limit' => static::LIMIT,
-            'Total' => DB::foundRows(),
-        ]));
+
+
+        if (!empty($BlogPosts)) {
+            return new Response(new TwigBuilder('blog/posts.twig', [
+                'BlogPosts' => $BlogPosts,
+                'isLoggedIn' => App::$App->is_loggedin(),
+                'Sidebar' => $this->getSidebarData(),
+                'Limit' => static::LIMIT,
+                'Total' => DB::foundRows(),
+            ]));
+        } else {
+            return $this->notFound();
+        }
     }
     
     /**
@@ -246,23 +254,42 @@ class Blog extends \Divergence\Controllers\RequestHandler
      * @param string $permalink
      * @link project://views/blog/post.twig
      * @link project://views/templates/post.twig
-     * @return void
+     * @return Response
      */
-    public function post($year, $month, $permalink)
+    public function post($year, $month, $permalink): Response
     {
         $BlogPost = BlogPost::getByWhere(array_merge($this->conditions(), [
             sprintf('YEAR(`Created`)=%d', $year),
             sprintf('MONTH(`Created`)=%d', $month),
             "`permalink`='".DB::escape($permalink)."'",
         ]));
+
+        if (!empty($BlogPost)) {
+            return new Response(new TwigBuilder('blog/post.twig', [
+                'BlogPost' => $BlogPost,
+                'isLoggedIn' => App::$App->is_loggedin(),
+                'Sidebar' => $this->getSidebarData(),
+                'Limit' => static::LIMIT,
+                'Total' => DB::foundRows(),
+            ]));
+        } else {
+            return $this->notFound();
+        }
         
-        return new Response(new TwigBuilder('blog/post.twig', [
-            'BlogPost' => $BlogPost,
-            'isLoggedIn' => App::$App->is_loggedin(),
-            'Sidebar' => $this->getSidebarData(),
-            'Limit' => static::LIMIT,
-            'Total' => DB::foundRows(),
-        ]));
+    }
+
+
+    /**
+     * Shows 404 page
+     *
+     * @return Response
+     */
+    public function notFound(): Response
+    {
+        $error = new Errors();
+        return $error->handlePageNotFound($this->request, [
+            'Sidebar' => $this->getSidebarData()
+        ]);
     }
     
     /**
@@ -302,6 +329,8 @@ class Blog extends \Divergence\Controllers\RequestHandler
                     'Total' => DB::foundRows(),
                 ]));
             }
+        } else {
+            return $this->notFound();
         }
     }
     
@@ -312,9 +341,9 @@ class Blog extends \Divergence\Controllers\RequestHandler
      */
     public static function logout()
     {
-        if (App::$Session->CreatorID) {
-            App::$Session->CreatorID = null;
-            App::$Session->save();
+        if (App::$App->Session->CreatorID) {
+            App::$App->Session->CreatorID = null;
+            App::$App->Session->save();
         }
         header('Location: /');
         exit;

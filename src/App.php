@@ -66,7 +66,7 @@ class App extends \Divergence\App
      */
     public function auth()
     {
-        if ($_POST['login']['email'] && $_POST['login']['password']) {
+        if (isset($_POST['login']['email']) && isset($_POST['login']['password'])) {
             $this->login($_POST['login']['email'], $_POST['login']['password']);
         }
     }
@@ -85,7 +85,8 @@ class App extends \Divergence\App
             if (password_verify($password, $User->PasswordHash)) {
                 $this->Session->CreatorID = $User->ID;
                 $this->Session->save();
-                header('Location: ' . $_SERVER['REDIRECT_URL']);
+                $url = isset($_SERVER['REDIRECT_URL'])?$_SERVER['REDIRECT_URL']:$_SERVER['REQUEST_URI'];
+                header('Location: ' . $url);
                 exit;
             }
         }

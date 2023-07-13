@@ -4,9 +4,6 @@ namespace technexus\Models;
 /**
  * User model
  * @inheritDoc
- * @property string $Email Email
- * @property string $DisplayName Username to display
- * @property string $PasswordHash Password hash
  */
 class User extends \Divergence\Models\Model
 {
@@ -29,11 +26,9 @@ class User extends \Divergence\Models\Model
     //static public $createRevisionOnDestroy = true;
     //static public $createRevisionOnSave = true;
     
-    public static $fields = [
-        'Email',
-        'DisplayName',
-        'PasswordHash',
-    ];
+    protected string $Email;
+    protected string $DisplayName;
+    protected string $PasswordHash;
     
     public static $relationships = [
         /*'Creator' => [

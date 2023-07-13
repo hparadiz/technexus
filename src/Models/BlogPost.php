@@ -1,9 +1,11 @@
 <?php
 namespace technexus\Models;
 
+use Divergence\Models\Mapping\Column;
+use Divergence\Models\Mapping\Relation;
+
 class BlogPost extends \Divergence\Models\Model
 {
-    //use \Divergence\Models\Versioning;
     use \Divergence\Models\Relations;
     
     // support subclassing
@@ -11,49 +13,39 @@ class BlogPost extends \Divergence\Models\Model
     public static $defaultClass = __CLASS__;
     public static $subClasses = [__CLASS__];
 
-
-    // ActiveRecord configuration
     public static $tableName = 'blog_posts';
     public static $singularNoun = 'blogpost';
     public static $pluralNoun = 'blogposts';
     
-    // versioning
-    //static public $historyTable = 'test_history';
-    //static public $createRevisionOnDestroy = true;
-    //static public $createRevisionOnSave = true;
+    protected string $Title;
+    protected string $Permalink;
+    protected string $MainContent;
+
+    #[Column(type:"timestamp",notnull:false)]
+    protected $Edited;
+
+    protected string $Status;
     
-    public static $fields = [
-        'Title',
-        'Permalink',
-        'MainContent',
-        'Edited' => [
-            'type' => 'timestamp',
-            'notnull' => false,
-        ],
-        'Status',
-    ];
-    
-    public static $relationships = [
-        'Creator' => [
-            'type' => 'one-one',
-            'class' => 'User',
-            'local'	=>	'CreatorID',
-            'foreign' => 'ID',
-            //,'conditions' => 'Status != "Deleted"'
-            //,'order' => ['name' => 'ASC']
-        ],
-        'Tags' => [
-            'type' => 'one-many',
-            'class' => PostTags::class,
-            'local' => 'ID',
-            'foreign' => 'BlogPostID',
-        ],
-    ];
+    #[Relation(
+        type: 'one-one',
+        class: User::class,
+        local: 'CreatorID',
+        foreign: 'ID'
+    )]
+    protected $Creator;
+
+    #[Relation(
+        type: 'one-many',
+        class: PostTags::class,
+        local: 'ID',
+        foreign: 'BlogPostID'
+    )]
+    protected $Tags;
     
     public function getTags()
     {
         $Values = [];
-        foreach ($this->Tags as $Tag) {
+        foreach ($this->__get('Tags') as $Tag) {
             $Values[] = $Tag->Tag->Tag;
         }
         return implode(',', $Values);
@@ -77,7 +69,7 @@ class BlogPost extends \Divergence\Models\Model
     public function getPermaLink($hostname=false)
     {
         return ($hostname?'https://'.$_SERVER['SERVER_NAME']:null) .
-        '/'.date('Y', $this->Created) . '/' . date('m', $this->Created).'/'.$this->Permalink.'/';
+        '/'.date('Y', $this->__get('Created')) . '/' . date('m', $this->__get('Created')).'/'.$this->__get('Permalink').'/';
     }
     
     public function getInternalPermaLink()
@@ -98,7 +90,7 @@ class BlogPost extends \Divergence\Models\Model
      */
     public function getShareImage()
     {
-        preg_match("/\/media\/([0-9]*)/", $this->MainContent, $images);
+        preg_match("/\/media\/([0-9]*)/", $this->__get('MainContent'), $images);
         
         if (ctype_digit($images[1])) {
             return 'https://'.$_SERVER['SERVER_NAME'].'/media/thumbnail/'.$images[1].'/500x500/cropped/';

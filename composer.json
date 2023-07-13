@@ -21,6 +21,7 @@
 		    "technexus\\": "src"
 	    }
     },
+    "prefer-stable": true,
     "minimum-stability": "dev",
     "scripts": {
 	    "fix-code": "php-cs-fixer fix"
