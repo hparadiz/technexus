@@ -341,9 +341,9 @@ class Blog extends \Divergence\Controllers\RequestHandler
      */
     public static function logout()
     {
-        if (App::$Session->CreatorID) {
-            App::$Session->CreatorID = null;
-            App::$Session->save();
+        if (App::$App->Session->CreatorID) {
+            App::$App->Session->CreatorID = null;
+            App::$App->Session->save();
         }
         header('Location: /');
         exit;
