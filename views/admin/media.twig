@@ -1,0 +1,15 @@
+{% extends "/admin/design.twig" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            {% for MediaObject in Media %}
+            <span class="col-md-4">
+                <a href="/media/{{MediaObject.ID}}">
+                    <img alt="picture" src="/media/thumbnail/{{MediaObject.ID}}/200x200/cropped" class="img-fluid"  style="margin: 25px;">
+                </a>
+            </span>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
