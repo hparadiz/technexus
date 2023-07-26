@@ -1,0 +1,21 @@
+{% extends "/admin/design.twig" %}
+
+{% block content %}
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col" colspan="2">Login</th>
+    </div>
+    </thead>
+    <tbody>
+    {% for User in Users %}
+        <tr>
+            <th scope="row">{{User.ID}}</th>
+            <th>{{User.Email}}</th>
+            <th><button class="btn btn-sm btn-danger">Reset Password</button></th>
+        </tr>
+    {% endfor %}
+    </tbody>
+</div>
+{% endblock %}

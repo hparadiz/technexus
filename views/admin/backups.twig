@@ -1,0 +1,21 @@
+{% extends "/admin/design.twig" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h4>Backups</h4>
+    </div>
+    <div class="row">
+        <a href="/admin/backups/download">Download Backup Now</a><br>
+    </div><br>
+    <div class="row">
+        <h4>Automated Email Backup</h4>
+    </div>
+    <div class="row">
+        <p>This requires crontab.</p>
+        <p>Please add this to your crontab</p>
+    </div>
+    <div class="row">
+        <pre>* 5 * * * /var/www/technexus/bin/backup 2>&1 # Backup Blog</pre>
+    </div>
+{% endblock %}
