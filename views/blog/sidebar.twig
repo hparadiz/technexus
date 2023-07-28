@@ -17,7 +17,7 @@
   <div class="p-3">
 	  <h4 class="font-italic">Topics</h4>
 	  {% for Tag in Sidebar.Tags %}
-	  	<a class="badge badge-secondary" href="/topics/{{Tag.Tag.Slug}}">{{Tag.Tag.Tag}}</a>	
+	  	<a class="badge badge-secondary" href="/topics/{{Tag.Tag.Slug|url_encode}}">{{Tag.Tag.Tag}}</a>	
 	  {% endfor %}
     </ol>
   </div>
