@@ -47,7 +47,7 @@ class App extends \Divergence\App
      */
     public function init($Path)
     {
-        error_reporting(E_ALL & ~E_NOTICE);
+        error_reporting(E_ALL);
         parent::init($Path);
         
         date_default_timezone_set('America/New_York');

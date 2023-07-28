@@ -329,9 +329,8 @@ class Blog extends \Divergence\Controllers\RequestHandler
                     'Total' => DB::foundRows(),
                 ]));
             }
-        } else {
-            return $this->notFound();
         }
+        return $this->notFound();
     }
     
     /**

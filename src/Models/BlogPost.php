@@ -45,10 +45,13 @@ class BlogPost extends \Divergence\Models\Model
     public function getTags()
     {
         $Values = [];
-        foreach ($this->__get('Tags') as $Tag) {
-            $Values[] = $Tag->Tag->Tag;
-        }
-        return implode(',', $Values);
+        if ($Tags = $this->getValue('Tags')) {
+            foreach ($Tags as $Tag) {
+                $Values[] = $Tag->Tag->Tag;
+            }
+            return implode(',', $Values);
+        } 
+        return '';
     }
 
     public function __get($field)
