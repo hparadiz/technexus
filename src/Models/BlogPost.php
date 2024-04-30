@@ -95,6 +95,10 @@ class BlogPost extends \Divergence\Models\Model
     {
         preg_match("/\/media\/([0-9]*)/", $this->getValue('MainContent'), $images);
         
+        if (!isset($images[1])) {
+            return false;
+        }
+        
         if (ctype_digit($images[1])) {
             return 'https://'.$_SERVER['SERVER_NAME'].'/media/thumbnail/'.$images[1].'/500x500/cropped/';
         } else {
