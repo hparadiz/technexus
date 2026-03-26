@@ -12,6 +12,7 @@ namespace technexus;
 use technexus\Models\User;
 use technexus\Models\Session;
 use technexus\Controllers\Main;
+use technexus\Whoops\SystemFacade as WhoopsSystemFacade;
 use Divergence\Responders\Emitter;
 use GuzzleHttp\Psr7\ServerRequest;
 
@@ -122,5 +123,20 @@ class App extends \Divergence\App
         $main = new Main();
         $response = $main->handle(ServerRequest::fromGlobals());
         (new Emitter($response))->emit();
+    }
+
+    public function registerErrorHandler()
+    {
+        if ($this->Config['environment'] == 'dev') {
+            $this->whoops = new \Whoops\Run(new WhoopsSystemFacade());
+
+            $Handler = new \Whoops\Handler\PrettyPageHandler();
+            $Handler->setPageTitle("Divergence Error");
+
+            $this->whoops->pushHandler($Handler);
+            $this->whoops->register();
+        } else {
+            error_reporting(0);
+        }
     }
 }

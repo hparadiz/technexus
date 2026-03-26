@@ -23,13 +23,13 @@
 
   <body>
     <div class="container">
-      <header class="blog-header py-3">
+      <header class="blog-header">
         <div class="row flex-nowrap justify-content-between align-items-center">
           <div class="col-4 pt-1">
             {#<a class="text-muted" href="#">Subscribe</a>#}
           </div>
           <div class="col-4 text-center">
-            <a class="blog-header-logo text-dark" href="/">Tech Nexus</a>
+            <a class="blog-header-logo-image" href="/" aria-label="Tech Nexus"></a>
           </div>
           <div class="col-4 d-flex justify-content-end align-items-center">
             {#<a class="text-muted" href="#">
@@ -43,7 +43,7 @@
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-8 blog-main">
-          <h3 class="pb-3 mb-4 font-italic border-bottom">
+          <h3 class="pb-3 mb-4 border-bottom terminal-heading">
             From the Terminal
           </h3>
 		  {% block content %}{% endblock %}
@@ -55,7 +55,7 @@
 
     </main><!-- /.container -->
 
-    <footer class="blog-footer">
+    <footer class="blog-footer terminal-heading">
 	    <p><a href="#" onclick="window.scrollTo(0,0); return false;">Back to top</a></p>
 	    <p>Page generated in {{App.LoadTime|number_format(4)}} seconds.</p>
       <p><small>© {{ "now"|date('Y') }} Henry Paradiz - All Rights Reserved</small></p>

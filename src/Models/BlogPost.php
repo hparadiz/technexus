@@ -7,24 +7,17 @@ use Divergence\Models\Mapping\Relation;
 class BlogPost extends \Divergence\Models\Model
 {
     use \Divergence\Models\Relations;
-    
-    // support subclassing
-    public static $rootClass = __CLASS__;
-    public static $defaultClass = __CLASS__;
-    public static $subClasses = [__CLASS__];
 
     public static $tableName = 'blog_posts';
-    public static $singularNoun = 'blogpost';
-    public static $pluralNoun = 'blogposts';
     
-    protected string $Title;
-    protected string $Permalink;
-    protected string $MainContent;
+    private string $Title;
+    private string $Permalink;
+    private string $MainContent;
 
     #[Column(type:"timestamp",notnull:false)]
-    protected $Edited;
+    private $Edited;
 
-    protected string $Status;
+    private string $Status;
     
     #[Relation(
         type: 'one-one',
@@ -45,7 +38,7 @@ class BlogPost extends \Divergence\Models\Model
     public function getTags()
     {
         $Values = [];
-        if ($Tags = $this->getValue('Tags')) {
+        if ($Tags = $this->Tags) {
             foreach ($Tags as $Tag) {
                 $Values[] = $Tag->Tag->Tag;
             }
@@ -72,7 +65,7 @@ class BlogPost extends \Divergence\Models\Model
     public function getPermaLink($hostname=false)
     {
         return ($hostname?'https://'.$_SERVER['SERVER_NAME']:null) .
-        '/'.date('Y', $this->getValue('Created')) . '/' . date('m', $this->getValue('Created')).'/'.$this->getValue('Permalink').'/';
+        '/'.date('Y', $this->Created) . '/' . date('m', $this->Created).'/'.$this->Permalink.'/';
     }
     
     public function getInternalPermaLink()
@@ -93,7 +86,7 @@ class BlogPost extends \Divergence\Models\Model
      */
     public function getShareImage()
     {
-        preg_match("/\/media\/([0-9]*)/", $this->getValue('MainContent'), $images);
+        preg_match("/\/media\/([0-9]*)/", $this->MainContent, $images);
         
         if (!isset($images[1])) {
             return false;

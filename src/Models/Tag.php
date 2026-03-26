@@ -4,18 +4,11 @@ namespace technexus\Models;
 class Tag extends \Divergence\Models\Model
 {
     use \Divergence\Models\Relations;
-    
-    // support subclassing
-    public static $rootClass = __CLASS__;
-    public static $defaultClass = __CLASS__;
-    public static $subClasses = [__CLASS__];
 
     public static $tableName = 'tags';
-    public static $singularNoun = 'tag';
-    public static $pluralNoun = 'tags';
     
-    protected $Tag;
-    protected $Slug;
+    private $Tag;
+    private $Slug;
 
     public static $validators = [
         [
