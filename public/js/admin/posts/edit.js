@@ -2,7 +2,9 @@ var editposts = {
 	selectors: {
 		textareaContent: 'textarea#mainContent',
 		tagsEl: 'input[name="Tags"]',
-		form: 'form'
+		form: 'form',
+		title: 'input#title[name="Title"]',
+		permalink: 'input#title[name="Permalink"]'
 	},
 	onload: function (e)  {
 		tinymce.init({
@@ -122,8 +124,22 @@ var editposts = {
 			this.save();
 		});
 		
-		
+		$('input#title[name="Title"]').on('focus', (e) => {
+			let input = e.currentTarget;
+			if (input.value === input.defaultValue) {
+				input.select();
+			}
+		});
 
+		$('input#title[name="Title"]').on('input', (e) => {
+			let title = e.currentTarget.value;
+			let permalink = this.generatePermalink(title);
+			$('input#title[name="Permalink"]').val(permalink);
+		});
+
+		$('input#title[name="Title"]').on('change', (e) => {
+			document.title = 'Editing '+e.currentTarget.value;
+		});
 		
 		$(this.selectors.tagsEl).tagsinput({
 		  tagClass: 'badge badge-pill badge-secondary',
@@ -161,7 +177,11 @@ var editposts = {
 				$('.loader').hide();
 			}
 		});
-	}
+	},
+	generatePermalink: function(title) {
+		// Convert to lowercase, remove non-alphanumeric characters, and replace spaces with dashes
+		return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+	},
 };
 
 $(document).ready(editposts.onload.bind(editposts));

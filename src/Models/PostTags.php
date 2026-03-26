@@ -9,21 +9,14 @@ use Divergence\Models\Mapping\Relation;
 class PostTags extends \Divergence\Models\Model
 {
     use \Divergence\Models\Relations;
-    
-    // support subclassing
-    public static $rootClass = __CLASS__;
-    public static $defaultClass = __CLASS__;
-    public static $subClasses = [__CLASS__];
 
     public static $tableName = 'posttags';
-    public static $singularNoun = 'posttag';
-    public static $pluralNoun = 'posttages';
     
     #[Column(unsigned:true)]
-    protected int $BlogPostID;
+    private int $BlogPostID;
 
     #[Column(unsigned:true)]
-    protected int $TagID;
+    private int $TagID;
     
     #[Relation(
         type: 'one-one',

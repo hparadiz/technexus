@@ -11,7 +11,4 @@ namespace technexus\Models;
 
 class Session extends \Divergence\Models\Auth\Session
 {
-    public static $rootClass = __CLASS__;
-    public static $defaultClass = __CLASS__;
-    public static $subClasses = [__CLASS__];
 }
