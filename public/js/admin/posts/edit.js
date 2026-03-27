@@ -1,11 +1,12 @@
 var editposts = {
 	selectors: {
 		textareaContent: 'textarea#mainContent',
-		tagsEl: 'input[name="Tags"]',
+		tagsEl: 'input#postTags[name="Tags"]',
 		form: 'form',
-		title: 'input#title[name="Title"]',
-		permalink: 'input#title[name="Permalink"]'
+		title: 'input#postTitle[name="Title"]',
+		permalink: 'input#postPermalink[name="Permalink"]'
 	},
+	permalinkTouched: false,
 	onload: function (e)  {
 		tinymce.init({
 			selector: this.selectors.textareaContent,
@@ -107,7 +108,7 @@ var editposts = {
 			autosave_retention: '60m'
 		});
 
-		$('input#title').on('change', (e) => {
+		$(this.selectors.title).on('change', (e) => {
 			document.title = 'Editing '+e.currentTarget.value;
 		});
 		
@@ -124,20 +125,26 @@ var editposts = {
 			this.save();
 		});
 		
-		$('input#title[name="Title"]').on('focus', (e) => {
+		$(this.selectors.title).on('focus', (e) => {
 			let input = e.currentTarget;
 			if (input.value === input.defaultValue) {
 				input.select();
 			}
 		});
 
-		$('input#title[name="Title"]').on('input', (e) => {
-			let title = e.currentTarget.value;
-			let permalink = this.generatePermalink(title);
-			$('input#title[name="Permalink"]').val(permalink);
+		$(this.selectors.permalink).on('input', () => {
+			this.permalinkTouched = true;
 		});
 
-		$('input#title[name="Title"]').on('change', (e) => {
+		$(this.selectors.title).on('input', (e) => {
+			let title = e.currentTarget.value;
+			let permalink = this.generatePermalink(title);
+			if (!this.permalinkTouched || !$(this.selectors.permalink).val()) {
+				$(this.selectors.permalink).val(permalink);
+			}
+		});
+
+		$(this.selectors.title).on('change', (e) => {
 			document.title = 'Editing '+e.currentTarget.value;
 		});
 		
@@ -180,7 +187,11 @@ var editposts = {
 	},
 	generatePermalink: function(title) {
 		// Convert to lowercase, remove non-alphanumeric characters, and replace spaces with dashes
-		return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+		return title
+			.toLowerCase()
+			.replace(/['"]/g, '')
+			.replace(/[^a-z0-9]+/g, '-')
+			.replace(/^-+|-+$/g, '');
 	},
 };
 

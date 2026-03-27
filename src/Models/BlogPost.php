@@ -64,8 +64,12 @@ class BlogPost extends \Divergence\Models\Model
 
     public function getPermaLink($hostname=false)
     {
+        $created = $this->getValue('Created');
+        $permalink = (string) $this->getValue('Permalink');
+        $timestamp = is_numeric($created) ? (int) $created : strtotime((string) $created);
+
         return ($hostname?'https://'.$_SERVER['SERVER_NAME']:null) .
-        '/'.date('Y', $this->Created) . '/' . date('m', $this->Created).'/'.$this->Permalink.'/';
+        '/'.date('Y', $timestamp) . '/' . date('m', $timestamp).'/'.$permalink.'/';
     }
     
     public function getInternalPermaLink()
@@ -102,12 +106,21 @@ class BlogPost extends \Divergence\Models\Model
     public function saveTags($tags)
     {
         $SeenTags = [];
+
+        $tags = array_values(array_unique(array_filter(array_map(function ($tag) {
+            return trim((string) $tag);
+        }, is_array($tags) ? $tags : [$tags]))));
+
+        if (empty($tags)) {
+            $this->clearTags();
+            return;
+        }
         
         foreach ($tags as $tag) {
             if (!$Tag = Tag::getByField('Tag', $tag)) {
                 $Tag = Tag::create([
                     'Tag' => $tag,
-                    'Slug' => strtolower($tag),
+                    'Slug' => $this->slugify($tag),
                 ], true);
             }
             
@@ -140,19 +153,38 @@ class BlogPost extends \Divergence\Models\Model
         if ($this->isDirty) {
             $this->Edited = time();
         }
+
+        $this->Permalink = $this->normalizePermalink($this->Permalink ?: $this->Title ?: 'untitled');
         
-        if (isset($_POST['Tags'])) {
+        parent::save($deep);
+
+        if (array_key_exists('Tags', $_POST)) {
             if (empty($_POST['Tags'])) {
                 $this->clearTags();
             } else {
                 $TagData = explode(',', $_POST['Tags']);
-                if (!$TagData) {
-                    $TagData = $_POST['Tags'];
-                }
                 $this->saveTags($TagData);
             }
         }
-        
-        return parent::save($deep);
+    }
+
+    protected function normalizePermalink(string $permalink): string
+    {
+        $permalink = strtolower(trim($permalink));
+        $permalink = preg_replace("/['\"]+/", '', $permalink);
+        $permalink = preg_replace('/[^a-z0-9]+/', '-', $permalink);
+        $permalink = trim($permalink, '-');
+
+        return $permalink ?: 'untitled';
+    }
+
+    protected function slugify(string $tag): string
+    {
+        $slug = strtolower(trim($tag));
+        $slug = preg_replace("/['\"]+/", '', $slug);
+        $slug = preg_replace('/[^a-z0-9]+/', '-', $slug);
+        $slug = trim($slug, '-');
+
+        return $slug ?: strtolower($tag);
     }
 }
