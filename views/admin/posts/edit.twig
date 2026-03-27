@@ -19,12 +19,12 @@
 		<input type="hidden" id="BlogPostID" value="{{BlogPost.ID}}">
 		<form>
 			<div class="mb-3">
-				<label for="title">Title</label>
-				<input type="text" class="form-control" id="title" placeholder="" name="Title" value="{{BlogPost.Title}}" required="" spellcheck="true">
+				<label for="postTitle">Title</label>
+				<input type="text" class="form-control" id="postTitle" placeholder="" name="Title" value="{{BlogPost.Title}}" required="" spellcheck="true">
 			</div>
 			<div class="mb-3">
-				<label for="title">Permalink</label>
-				<input type="text" class="form-control" id="title" placeholder="" name="Permalink" value="{{BlogPost.Permalink}}" required="" spellcheck="true">
+				<label for="postPermalink">Permalink</label>
+				<input type="text" class="form-control" id="postPermalink" placeholder="" name="Permalink" value="{{BlogPost.Permalink}}" required="" spellcheck="true">
 			</div>
 			<div class="mb-3">
 				<label for="mainContent">Content</label>
@@ -38,8 +38,8 @@
 				</select>
 			</div>
 			<div class="mb-3">
-				<label for="tags">Tags</label>
-				<input type="text" class="form-control" name="Tags" value="{{BlogPost.getTags()}}">
+				<label for="postTags">Tags</label>
+				<input type="text" class="form-control" id="postTags" name="Tags" value="{{BlogPost.getTags()}}">
 			</div>
 			<small id="lastEdit" class="form-text text-muted">Last edited {{BlogPost.Created | date('F d, Y g:i a') }}<div class="loader float-right" id="loader-1" style="display: none;"></div></small>
 			<hr class="mb-4">
@@ -47,7 +47,7 @@
 		</form>
 	</div>
 	<script>
-		document.typeAheadTags = [{{TagTypeAhead|raw}}];
+		document.typeAheadTags = {{TagTypeAhead|raw}};
 	</script>
 {% endblock %}
 

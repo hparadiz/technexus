@@ -14,12 +14,15 @@ use Ifsnop\Mysqldump;
 use \technexus\App as App;
 use Divergence\IO\Database\MySQL;
 use Divergence\Responders\Response;
+use Divergence\Responders\EmptyBuilder;
 use Divergence\Responders\TwigBuilder;
 use Psr\Http\Message\RequestInterface;
 use Divergence\Responders\MediaBuilder;
 use Psr\Http\Message\ResponseInterface;
 use Divergence\Responders\MediaResponse;
 use \technexus\Models\BlogPost as BlogPost;
+use technexus\Models\User;
+use Divergence\Models\Media\Media as MediaModel;
 
 /**
  * Main controller for the admin
@@ -126,8 +129,15 @@ class Admin extends \Divergence\Controllers\RequestHandler
      */
     public function users(): ResponseInterface
     {
+        switch ($action = $this->shiftPath()) {
+            case 'delete':
+                return $this->deleteUser($this->shiftPath());
+        }
+
         return new Response(new TwigBuilder('admin/users.twig', [
-            'Users' => \technexus\Models\User::getAll(),
+            'Users' => User::getAll(['order' => 'ID DESC']),
+            'CurrentUserID' => App::$App->Session->CreatorID,
+            'Notice' => $this->getNotice(),
         ]));
     }
 
@@ -138,8 +148,61 @@ class Admin extends \Divergence\Controllers\RequestHandler
      */
     public function media(): ResponseInterface
     {
+        switch ($action = $this->shiftPath()) {
+            case 'delete':
+                return $this->deleteMedia($this->shiftPath());
+        }
+
+        $mediaItems = [];
+        $brokenItems = [];
+        $otherItems = [];
+
+        foreach (MediaModel::getAll(['order' => 'ID DESC']) as $MediaObject) {
+            $originalPath = $MediaObject->getFilesystemPath();
+
+            if (!$originalPath || !is_readable($originalPath)) {
+                $brokenItems[] = $this->buildBrokenMediaItem($MediaObject, 'Original file is missing.');
+                continue;
+            }
+
+            if (!str_starts_with((string) $MediaObject->MIMEType, 'image/')) {
+                $otherItems[] = [
+                    'ID' => $MediaObject->ID,
+                    'Caption' => $MediaObject->Caption ?: 'Untitled upload',
+                    'MIMEType' => $MediaObject->MIMEType,
+                    'Created' => $MediaObject->Created,
+                    'OpenUrl' => $MediaObject->WebPath,
+                    'DeleteUrl' => '/admin/media/delete/'.$MediaObject->ID,
+                ];
+
+                continue;
+            }
+
+            try {
+                $MediaObject->getThumbnail(320, 240, 'F5F1E8');
+            } catch (\Throwable $e) {
+                $brokenItems[] = $this->buildBrokenMediaItem($MediaObject, $e->getMessage());
+                continue;
+            }
+
+            $mediaItems[] = [
+                'ID' => $MediaObject->ID,
+                'Caption' => $MediaObject->Caption ?: 'Untitled upload',
+                'MIMEType' => $MediaObject->MIMEType,
+                'Width' => $MediaObject->Width,
+                'Height' => $MediaObject->Height,
+                'Created' => $MediaObject->Created,
+                'OpenUrl' => $MediaObject->WebPath,
+                'ThumbnailUrl' => '/media'.$MediaObject->buildThumbnailRequest(320, 240, 'F5F1E8'),
+                'DeleteUrl' => '/admin/media/delete/'.$MediaObject->ID,
+            ];
+        }
+
         return new Response(new TwigBuilder('admin/media.twig', [
-            'Media' => \Divergence\Models\Media\Media::getAll(),
+            'Media' => $mediaItems,
+            'BrokenMedia' => $brokenItems,
+            'OtherMedia' => $otherItems,
+            'Notice' => $this->getNotice(),
         ]));
     }
 
@@ -193,5 +256,68 @@ class Admin extends \Divergence\Controllers\RequestHandler
             ->withHeader('Content-Length', filesize($tmpName));
 
         return $response;
+    }
+
+    protected function deleteUser($userID): ResponseInterface
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            return $this->redirect('/admin/users');
+        }
+
+        if (!ctype_digit((string) $userID) || !$User = User::getByID($userID)) {
+            return $this->redirect('/admin/users?notice=user-delete-missing');
+        }
+
+        if ((int) $User->ID === (int) App::$App->Session->CreatorID) {
+            return $this->redirect('/admin/users?notice=user-delete-self');
+        }
+
+        $User->destroy();
+
+        return $this->redirect('/admin/users?notice=user-deleted');
+    }
+
+    protected function deleteMedia($mediaID): ResponseInterface
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            return $this->redirect('/admin/media');
+        }
+
+        if (!ctype_digit((string) $mediaID) || !$MediaObject = MediaModel::getByID($mediaID)) {
+            return $this->redirect('/admin/media?notice=media-delete-missing');
+        }
+
+        $MediaObject->destroy();
+
+        return $this->redirect('/admin/media?notice=media-deleted');
+    }
+
+    protected function buildBrokenMediaItem(MediaModel $MediaObject, string $reason): array
+    {
+        return [
+            'ID' => $MediaObject->ID,
+            'Caption' => $MediaObject->Caption ?: 'Untitled upload',
+            'MIMEType' => $MediaObject->MIMEType,
+            'Reason' => $reason,
+            'Created' => $MediaObject->Created,
+            'DeleteUrl' => '/admin/media/delete/'.$MediaObject->ID,
+        ];
+    }
+
+    protected function getNotice(): ?array
+    {
+        return match ($_GET['notice'] ?? null) {
+            'user-deleted' => ['type' => 'success', 'message' => 'User deleted.'],
+            'user-delete-missing' => ['type' => 'danger', 'message' => 'User not found.'],
+            'user-delete-self' => ['type' => 'warning', 'message' => 'Refusing to delete the account currently logged in.'],
+            'media-deleted' => ['type' => 'success', 'message' => 'Media deleted.'],
+            'media-delete-missing' => ['type' => 'danger', 'message' => 'Media item not found.'],
+            default => null,
+        };
+    }
+
+    protected function redirect(string $url): ResponseInterface
+    {
+        return (new Response(new EmptyBuilder('')))->withStatus(302)->withHeader('Location', $url);
     }
 }

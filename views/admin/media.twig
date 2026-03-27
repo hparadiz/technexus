@@ -1,15 +1,158 @@
 {% extends "/admin/design.twig" %}
 
+{% block metatop %}
+    {{ parent() }}
+    <style>
+        .media-toolbar {
+            gap: 1rem;
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .media-card {
+            border: 1px solid rgba(0, 0, 0, .08);
+            border-radius: .75rem;
+            overflow: hidden;
+            box-shadow: 0 .75rem 1.5rem rgba(0, 0, 0, .06);
+        }
+
+        .media-card__thumb {
+            display: block;
+            background: #f5f1e8;
+            aspect-ratio: 4 / 3;
+        }
+
+        .media-card__thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .media-card__body {
+            padding: 1rem;
+        }
+
+        .media-meta {
+            color: #6c757d;
+            font-size: .9rem;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
-    <div class="row">
-        <div class="col-md-12">
-            {% for MediaObject in Media %}
-            <span class="col-md-4">
-                <a href="/media/{{MediaObject.ID}}">
-                    <img alt="picture" src="/media/thumbnail/{{MediaObject.ID}}/200x200/cropped" class="img-fluid"  style="margin: 25px;">
-                </a>
-            </span>
-            {% endfor %}
-        </div>
+{% if Notice %}
+<div class="alert alert-{{Notice.type}}" role="alert">{{Notice.message}}</div>
+{% endif %}
+
+<div class="d-flex justify-content-between align-items-start media-toolbar mb-4 flex-wrap">
+    <div>
+        <h1 class="h3 mb-1">Media Library</h1>
+        <p class="text-muted mb-0">Only renderable media is shown in the gallery. Broken records are listed separately so they stop poisoning the page.</p>
     </div>
+    <div class="text-right">
+        <div><span class="badge badge-dark">{{Media|length}} healthy</span></div>
+        <div class="mt-2"><span class="badge badge-secondary">{{OtherMedia|length}} other files</span></div>
+        <div class="mt-2"><span class="badge badge-warning">{{BrokenMedia|length}} broken</span></div>
+    </div>
+</div>
+
+{% if Media %}
+<div class="media-grid mb-5">
+    {% for MediaObject in Media %}
+    <article class="media-card">
+        <a class="media-card__thumb" href="{{MediaObject.OpenUrl}}" target="_blank" rel="noopener noreferrer">
+            <img alt="{{MediaObject.Caption}}" src="{{MediaObject.ThumbnailUrl}}">
+        </a>
+        <div class="media-card__body">
+            <h2 class="h5 mb-2">{{MediaObject.Caption}}</h2>
+            <div class="media-meta mb-3">
+                #{{MediaObject.ID}} | {{MediaObject.MIMEType}}{% if MediaObject.Width and MediaObject.Height %} | {{MediaObject.Width}}x{{MediaObject.Height}}{% endif %}
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <a class="btn btn-sm btn-outline-dark" href="{{MediaObject.OpenUrl}}" target="_blank" rel="noopener noreferrer">Open</a>
+                <form method="post" action="{{MediaObject.DeleteUrl}}" class="d-inline" onsubmit="return confirm('Delete media #{{MediaObject.ID}}?');">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </article>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-light border">No renderable media found.</div>
+{% endif %}
+
+{% if OtherMedia %}
+<section class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h4 mb-0">Other Files</h2>
+        <span class="text-muted">Non-image media is listed without thumbnail generation.</span>
+    </div>
+    <table class="table table-sm table-striped">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Caption</th>
+                <th scope="col">Type</th>
+                <th scope="col" class="text-right">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for MediaObject in OtherMedia %}
+            <tr>
+                <th scope="row">{{MediaObject.ID}}</th>
+                <td>{{MediaObject.Caption}}</td>
+                <td>{{MediaObject.MIMEType}}</td>
+                <td class="text-right">
+                    <a class="btn btn-sm btn-outline-dark" href="{{MediaObject.OpenUrl}}" target="_blank" rel="noopener noreferrer">Open</a>
+                    <form method="post" action="{{MediaObject.DeleteUrl}}" class="d-inline" onsubmit="return confirm('Delete media #{{MediaObject.ID}}?');">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endif %}
+
+{% if BrokenMedia %}
+<section>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h4 mb-0">Broken Records</h2>
+        <span class="text-muted">These are excluded from the gallery.</span>
+    </div>
+    <table class="table table-sm table-striped">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Caption</th>
+                <th scope="col">Type</th>
+                <th scope="col">Problem</th>
+                <th scope="col" class="text-right">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for MediaObject in BrokenMedia %}
+            <tr>
+                <th scope="row">{{MediaObject.ID}}</th>
+                <td>{{MediaObject.Caption}}</td>
+                <td>{{MediaObject.MIMEType}}</td>
+                <td>{{MediaObject.Reason}}</td>
+                <td class="text-right">
+                    <form method="post" action="{{MediaObject.DeleteUrl}}" class="d-inline" onsubmit="return confirm('Delete broken media #{{MediaObject.ID}}?');">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endif %}
 {% endblock %}

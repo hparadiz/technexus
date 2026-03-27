@@ -25,6 +25,6 @@ class Tag extends \Divergence\Models\Model
         foreach ($Tags as $Tag) {
             $Values[] = $Tag->Tag;
         }
-        return "'".implode("','", $Values)."'";
+        return json_encode(array_values(array_unique($Values)));
     }
 }
