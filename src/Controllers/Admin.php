@@ -22,7 +22,6 @@ use Psr\Http\Message\ResponseInterface;
 use Divergence\Responders\MediaResponse;
 use \technexus\Models\BlogPost as BlogPost;
 use technexus\Models\User;
-use Divergence\Models\Media\Media as MediaModel;
 
 /**
  * Main controller for the admin
@@ -99,6 +98,8 @@ class Admin extends \Divergence\Controllers\RequestHandler
         if ($BlogPost = BlogPost::getByID($action)) {
             return new Response(new TwigBuilder('admin/posts/edit.twig', [
                 'BlogPost' => $BlogPost,
+                'TagsValue' => $BlogPost->getTags(),
+                'InitialTags' => $BlogPost->getTagValues(),
                 'TagTypeAhead' => \technexus\Models\Tag::getTypeahead()
             ]));
         }
@@ -148,60 +149,7 @@ class Admin extends \Divergence\Controllers\RequestHandler
      */
     public function media(): ResponseInterface
     {
-        switch ($action = $this->shiftPath()) {
-            case 'delete':
-                return $this->deleteMedia($this->shiftPath());
-        }
-
-        $mediaItems = [];
-        $brokenItems = [];
-        $otherItems = [];
-
-        foreach (MediaModel::getAll(['order' => 'ID DESC']) as $MediaObject) {
-            $originalPath = $MediaObject->getFilesystemPath();
-
-            if (!$originalPath || !is_readable($originalPath)) {
-                $brokenItems[] = $this->buildBrokenMediaItem($MediaObject, 'Original file is missing.');
-                continue;
-            }
-
-            if (!str_starts_with((string) $MediaObject->MIMEType, 'image/')) {
-                $otherItems[] = [
-                    'ID' => $MediaObject->ID,
-                    'Caption' => $MediaObject->Caption ?: 'Untitled upload',
-                    'MIMEType' => $MediaObject->MIMEType,
-                    'Created' => $MediaObject->Created,
-                    'OpenUrl' => $MediaObject->WebPath,
-                    'DeleteUrl' => '/admin/media/delete/'.$MediaObject->ID,
-                ];
-
-                continue;
-            }
-
-            try {
-                $MediaObject->getThumbnail(320, 240, 'F5F1E8');
-            } catch (\Throwable $e) {
-                $brokenItems[] = $this->buildBrokenMediaItem($MediaObject, $e->getMessage());
-                continue;
-            }
-
-            $mediaItems[] = [
-                'ID' => $MediaObject->ID,
-                'Caption' => $MediaObject->Caption ?: 'Untitled upload',
-                'MIMEType' => $MediaObject->MIMEType,
-                'Width' => $MediaObject->Width,
-                'Height' => $MediaObject->Height,
-                'Created' => $MediaObject->Created,
-                'OpenUrl' => $MediaObject->WebPath,
-                'ThumbnailUrl' => '/media'.$MediaObject->buildThumbnailRequest(320, 240, 'F5F1E8'),
-                'DeleteUrl' => '/admin/media/delete/'.$MediaObject->ID,
-            ];
-        }
-
         return new Response(new TwigBuilder('admin/media.twig', [
-            'Media' => $mediaItems,
-            'BrokenMedia' => $brokenItems,
-            'OtherMedia' => $otherItems,
             'Notice' => $this->getNotice(),
         ]));
     }
@@ -277,41 +225,12 @@ class Admin extends \Divergence\Controllers\RequestHandler
         return $this->redirect('/admin/users?notice=user-deleted');
     }
 
-    protected function deleteMedia($mediaID): ResponseInterface
-    {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            return $this->redirect('/admin/media');
-        }
-
-        if (!ctype_digit((string) $mediaID) || !$MediaObject = MediaModel::getByID($mediaID)) {
-            return $this->redirect('/admin/media?notice=media-delete-missing');
-        }
-
-        $MediaObject->destroy();
-
-        return $this->redirect('/admin/media?notice=media-deleted');
-    }
-
-    protected function buildBrokenMediaItem(MediaModel $MediaObject, string $reason): array
-    {
-        return [
-            'ID' => $MediaObject->ID,
-            'Caption' => $MediaObject->Caption ?: 'Untitled upload',
-            'MIMEType' => $MediaObject->MIMEType,
-            'Reason' => $reason,
-            'Created' => $MediaObject->Created,
-            'DeleteUrl' => '/admin/media/delete/'.$MediaObject->ID,
-        ];
-    }
-
     protected function getNotice(): ?array
     {
         return match ($_GET['notice'] ?? null) {
             'user-deleted' => ['type' => 'success', 'message' => 'User deleted.'],
             'user-delete-missing' => ['type' => 'danger', 'message' => 'User not found.'],
             'user-delete-self' => ['type' => 'warning', 'message' => 'Refusing to delete the account currently logged in.'],
-            'media-deleted' => ['type' => 'success', 'message' => 'Media deleted.'],
-            'media-delete-missing' => ['type' => 'danger', 'message' => 'Media item not found.'],
             default => null,
         };
     }

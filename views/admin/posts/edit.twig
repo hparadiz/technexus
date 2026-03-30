@@ -39,7 +39,7 @@
 			</div>
 			<div class="mb-3">
 				<label for="postTags">Tags</label>
-				<input type="text" class="form-control" id="postTags" name="Tags" value="{{BlogPost.getTags()}}">
+				<input type="text" class="form-control" id="postTags" name="Tags" value="{{TagsValue}}">
 			</div>
 			<small id="lastEdit" class="form-text text-muted">Last edited {{BlogPost.Created | date('F d, Y g:i a') }}<div class="loader float-right" id="loader-1" style="display: none;"></div></small>
 			<hr class="mb-4">
@@ -48,6 +48,7 @@
 	</div>
 	<script>
 		document.typeAheadTags = {{TagTypeAhead|raw}};
+		document.initialPostTags = {{InitialTags|json_encode|raw}};
 	</script>
 {% endblock %}
 
