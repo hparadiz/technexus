@@ -1,158 +1,336 @@
 {% extends "/admin/design.twig" %}
 
 {% block metatop %}
-    {{ parent() }}
-    <style>
-        .media-toolbar {
-            gap: 1rem;
-        }
+	{{ parent() }}
+	<style>
+		body {
+			background:
+				radial-gradient(circle at top left, rgba(219, 226, 235, .55), transparent 32rem),
+				linear-gradient(180deg, #f7f5f0 0%, #f3f0e8 100%);
+		}
 
-        .media-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 1.5rem;
-        }
+		body.media-fit-to-screen main.container {
+			max-width: 100%;
+			width: 100%;
+			padding-left: 1rem;
+			padding-right: 1rem;
+		}
 
-        .media-card {
-            border: 1px solid rgba(0, 0, 0, .08);
-            border-radius: .75rem;
-            overflow: hidden;
-            box-shadow: 0 .75rem 1.5rem rgba(0, 0, 0, .06);
-        }
+		main.container {
+			padding-bottom: 3rem;
+		}
 
-        .media-card__thumb {
-            display: block;
-            background: #f5f1e8;
-            aspect-ratio: 4 / 3;
-        }
+		.media-toolbar {
+			gap: 1rem;
+			padding: 1rem 1.25rem;
+			border: 1px solid rgba(43, 47, 54, .08);
+			border-radius: 1rem;
+			background: rgba(255, 255, 255, .78);
+			box-shadow: 0 .8rem 2rem rgba(49, 40, 24, .08);
+			backdrop-filter: blur(10px);
+		}
 
-        .media-card__thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
+		.media-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+			gap: 1.5rem;
+		}
 
-        .media-card__body {
-            padding: 1rem;
-        }
+		.media-grid.media-grid--compact {
+			grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+			gap: 1rem;
+		}
 
-        .media-meta {
-            color: #6c757d;
-            font-size: .9rem;
-        }
-    </style>
+		.media-card {
+			border: 1px solid rgba(43, 47, 54, .08);
+			border-radius: 1rem;
+			overflow: hidden;
+			box-shadow: 0 .85rem 2rem rgba(49, 40, 24, .08);
+			background: rgba(255, 255, 255, .92);
+			transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+		}
+
+		.media-card:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 1rem 2.2rem rgba(49, 40, 24, .12);
+			border-color: rgba(43, 47, 54, .14);
+		}
+
+		.media-card__thumb {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background:
+				linear-gradient(135deg, rgba(232, 226, 214, .95), rgba(247, 244, 238, .92)),
+				#f5f1e8;
+			aspect-ratio: 4 / 3;
+			color: #6c757d;
+			text-align: center;
+			padding: 0;
+			position: relative;
+		}
+
+		.media-card__thumb img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			display: block;
+		}
+
+		.media-card__thumb video {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			display: block;
+			background: #000;
+		}
+
+		.media-card__body {
+			padding: 1rem;
+		}
+
+		.media-grid.media-grid--compact .media-card__body {
+			padding: .75rem;
+		}
+
+		.media-grid.media-grid--compact .media-card__body .h5 {
+			font-size: 1rem;
+			margin-bottom: .5rem !important;
+		}
+
+		.media-grid.media-grid--compact .media-meta {
+			font-size: .8rem;
+			margin-bottom: .75rem !important;
+		}
+
+		.media-meta {
+			color: #6f6a5e;
+			font-size: .88rem;
+			line-height: 1.45;
+		}
+
+		.media-filters {
+			gap: .75rem;
+			justify-content: flex-end;
+		}
+
+		.media-filters [aria-label="Media filters"] {
+			gap: .5rem;
+		}
+
+		.media-card--invalid {
+			border-color: rgba(180, 55, 60, .28);
+			background: rgba(255, 251, 250, .96);
+		}
+
+		.media-card__thumb-bad {
+			font-size: 4rem;
+			line-height: 1;
+			color: #dc3545;
+		}
+
+		.media-grid.media-grid--compact .media-card__thumb-bad {
+			font-size: 2.75rem;
+		}
+
+		.media-title {
+			font-size: 2rem;
+			line-height: 1;
+			letter-spacing: -.04em;
+			margin: 0;
+			color: #23211c;
+		}
+
+		.media-panel {
+			padding: 1rem 1.25rem 1.25rem;
+			border: 1px solid rgba(43, 47, 54, .08);
+			border-radius: 1rem;
+			background: rgba(255, 255, 255, .72);
+			box-shadow: 0 .85rem 2rem rgba(49, 40, 24, .06);
+			backdrop-filter: blur(10px);
+		}
+
+		.media-panel__header {
+			gap: 1rem;
+			padding-bottom: 1rem;
+			margin-bottom: 1rem;
+			border-bottom: 1px solid rgba(43, 47, 54, .08);
+		}
+
+		.media-filters .btn-group,
+		.media-toolbar .btn-group {
+			border-radius: 999px;
+			overflow: hidden;
+		}
+
+		.media-filters .btn,
+		.media-toolbar .btn {
+			border-radius: 999px !important;
+			font-weight: 600;
+			letter-spacing: .01em;
+		}
+
+		.media-panel .btn,
+		.media-filters .btn,
+		.media-card__body .btn {
+			display: inline-flex;
+			align-items: center;
+			gap: .2rem;
+		}
+
+		.media-filters .btn-group > .btn {
+			padding-left: .9rem;
+			padding-right: .9rem;
+		}
+
+		.media-filters .btn-outline-dark,
+		.media-toolbar .btn-outline-dark {
+			border-color: rgba(43, 47, 54, .12);
+			color: #34312b;
+			background: rgba(255, 255, 255, .75);
+		}
+
+		.media-filters .btn-dark,
+		.media-toolbar .btn-dark {
+			background: #23211c;
+			border-color: #23211c;
+		}
+
+		#mediaSearch {
+			border-radius: 999px;
+			border-color: transparent;
+			background: transparent;
+			padding-left: .9rem;
+			padding-right: .9rem;
+			box-shadow: none;
+		}
+
+		.media-filters .input-group {
+			align-items: center;
+			border: 1px solid rgba(43, 47, 54, .12);
+			border-radius: 999px;
+			background: rgba(255, 255, 255, .85);
+			overflow: hidden;
+		}
+
+		.media-filters .input-group-text {
+			border: 0;
+			background: transparent !important;
+			padding-right: .25rem;
+		}
+
+		.media-filters .input-group .form-control {
+			border: 0 !important;
+			background: transparent !important;
+		}
+
+		.media-filters .input-group:focus-within {
+			border-color: rgba(43, 47, 54, .28);
+			box-shadow: 0 0 0 .15rem rgba(43, 47, 54, .08);
+		}
+
+		#mediaSearch:focus {
+			box-shadow: none;
+		}
+
+		#mediaStats .badge {
+			border-radius: 999px;
+			padding: .45rem .65rem;
+			font-weight: 600;
+		}
+
+		#mediaStats .badge i {
+			margin-right: .35rem;
+		}
+
+		#mediaNotice,
+		#mediaError,
+		#mediaLoading,
+		#mediaEmpty {
+			border-radius: .85rem;
+			border-width: 1px;
+		}
+
+		.media-card__body .btn {
+			border-radius: 999px;
+		}
+
+		.media-card__actions {
+			justify-content: flex-end;
+		}
+
+		.media-card__actions .btn i {
+			margin-right: 0;
+		}
+
+	</style>
 {% endblock %}
 
 {% block content %}
-{% if Notice %}
-<div class="alert alert-{{Notice.type}}" role="alert">{{Notice.message}}</div>
-{% endif %}
+<div id="mediaNotice" class="alert d-none" role="alert"></div>
+<div id="mediaError" class="alert alert-danger d-none" role="alert"></div>
+<div id="mediaLoading" class="alert alert-light border" role="status">Loading media...</div>
+<div id="mediaEmpty" class="alert alert-light border d-none">No media matched the current filter.</div>
 
-<div class="d-flex justify-content-between align-items-start media-toolbar mb-4 flex-wrap">
-    <div>
-        <h1 class="h3 mb-1">Media Library</h1>
-        <p class="text-muted mb-0">Only renderable media is shown in the gallery. Broken records are listed separately so they stop poisoning the page.</p>
-    </div>
-    <div class="text-right">
-        <div><span class="badge badge-dark">{{Media|length}} healthy</span></div>
-        <div class="mt-2"><span class="badge badge-secondary">{{OtherMedia|length}} other files</span></div>
-        <div class="mt-2"><span class="badge badge-warning">{{BrokenMedia|length}} broken</span></div>
-    </div>
-</div>
-
-{% if Media %}
-<div class="media-grid mb-5">
-    {% for MediaObject in Media %}
-    <article class="media-card">
-        <a class="media-card__thumb" href="{{MediaObject.OpenUrl}}" target="_blank" rel="noopener noreferrer">
-            <img alt="{{MediaObject.Caption}}" src="{{MediaObject.ThumbnailUrl}}">
-        </a>
-        <div class="media-card__body">
-            <h2 class="h5 mb-2">{{MediaObject.Caption}}</h2>
-            <div class="media-meta mb-3">
-                #{{MediaObject.ID}} | {{MediaObject.MIMEType}}{% if MediaObject.Width and MediaObject.Height %} | {{MediaObject.Width}}x{{MediaObject.Height}}{% endif %}
-            </div>
-            <div class="d-flex justify-content-between align-items-center">
-                <a class="btn btn-sm btn-outline-dark" href="{{MediaObject.OpenUrl}}" target="_blank" rel="noopener noreferrer">Open</a>
-                <form method="post" action="{{MediaObject.DeleteUrl}}" class="d-inline" onsubmit="return confirm('Delete media #{{MediaObject.ID}}?');">
-                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                </form>
-            </div>
-        </div>
-    </article>
-    {% endfor %}
-</div>
-{% else %}
-<div class="alert alert-light border">No renderable media found.</div>
-{% endif %}
-
-{% if OtherMedia %}
-<section class="mb-5">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="h4 mb-0">Other Files</h2>
-        <span class="text-muted">Non-image media is listed without thumbnail generation.</span>
-    </div>
-    <table class="table table-sm table-striped">
-        <thead class="thead-light">
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Caption</th>
-                <th scope="col">Type</th>
-                <th scope="col" class="text-right">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for MediaObject in OtherMedia %}
-            <tr>
-                <th scope="row">{{MediaObject.ID}}</th>
-                <td>{{MediaObject.Caption}}</td>
-                <td>{{MediaObject.MIMEType}}</td>
-                <td class="text-right">
-                    <a class="btn btn-sm btn-outline-dark" href="{{MediaObject.OpenUrl}}" target="_blank" rel="noopener noreferrer">Open</a>
-                    <form method="post" action="{{MediaObject.DeleteUrl}}" class="d-inline" onsubmit="return confirm('Delete media #{{MediaObject.ID}}?');">
-                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                    </form>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+<section class="media-panel mb-5">
+	<div class="media-panel__header d-flex justify-content-between align-items-center flex-wrap">
+		<div>
+			<h2 class="h4 mb-2"><i class="far fa-images mr-2"></i>Media Library Gallery</h2>
+			<div class="d-flex align-items-center flex-wrap" style="gap: .5rem;">
+				<button class="btn btn-sm btn-outline-dark" data-action="toggle-icon-size" type="button"><i class="fas fa-th"></i><span data-role="label">Smaller Icons</span></button>
+				<button class="btn btn-sm btn-outline-dark" id="mediaFitToggle" data-action="toggle-fit" type="button">
+					<i class="fas fa-expand-arrows-alt"></i><span data-role="label">Fit to Screen</span>
+				</button>
+			</div>
+		</div>
+		<div class="media-filters d-flex align-items-center flex-wrap">
+			<div class="btn-group btn-group-sm" role="group" aria-label="Media filters">
+				<button class="btn btn-dark active" data-action="set-filter" data-filter="all" type="button">All</button>
+				<button class="btn btn-outline-dark" data-action="set-filter" data-filter="images" type="button"><i class="far fa-image"></i>Images</button>
+				<button class="btn btn-outline-dark" data-action="set-filter" data-filter="other" type="button"><i class="far fa-file"></i>Other</button>
+				<button class="btn btn-outline-dark" data-action="set-filter" data-filter="invalid" type="button"><i class="fas fa-exclamation-triangle"></i>Invalid</button>
+			</div>
+			<div class="input-group input-group-sm" style="max-width: 320px;">
+				<div class="input-group-prepend">
+					<span class="input-group-text bg-white border-right-0"><i class="fas fa-search text-muted"></i></span>
+				</div>
+				<input class="form-control form-control-sm border-left-0" id="mediaSearch" type="search" placeholder="Filter by caption, id, or mime type">
+			</div>
+			<button class="btn btn-sm btn-outline-dark" data-action="refresh-media" type="button" aria-label="Refresh media"><i class="fas fa-sync-alt"></i></button>
+		</div>
+	</div>
+	<div id="mediaGrid" class="media-grid"></div>
 </section>
-{% endif %}
 
-{% if BrokenMedia %}
-<section>
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="h4 mb-0">Broken Records</h2>
-        <span class="text-muted">These are excluded from the gallery.</span>
-    </div>
-    <table class="table table-sm table-striped">
-        <thead class="thead-light">
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Caption</th>
-                <th scope="col">Type</th>
-                <th scope="col">Problem</th>
-                <th scope="col" class="text-right">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for MediaObject in BrokenMedia %}
-            <tr>
-                <th scope="row">{{MediaObject.ID}}</th>
-                <td>{{MediaObject.Caption}}</td>
-                <td>{{MediaObject.MIMEType}}</td>
-                <td>{{MediaObject.Reason}}</td>
-                <td class="text-right">
-                    <form method="post" action="{{MediaObject.DeleteUrl}}" class="d-inline" onsubmit="return confirm('Delete broken media #{{MediaObject.ID}}?');">
-                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                    </form>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</section>
-{% endif %}
+<script id="mediaCardTemplate" type="text/template">
+	<article class="media-card">
+		<a class="media-card__thumb" data-role="open" href="#" target="_blank" rel="noopener noreferrer">
+			<img data-role="thumb-image" alt="">
+			<video class="d-none" data-role="thumb-video" muted playsinline preload="metadata" loop></video>
+			<span class="d-none" data-role="thumb-fallback"></span>
+			<span class="d-none media-card__thumb-bad" data-role="thumb-bad">&#xFFFD;</span>
+		</a>
+		<div class="media-card__body">
+			<h2 class="h5 mb-2" data-role="name"></h2>
+			<div class="media-meta mb-3" data-role="meta"></div>
+			<div class="media-card__actions d-flex align-items-center">
+				<button class="btn btn-sm btn-outline-danger" data-action="delete-media" type="button" aria-label="Delete media"><i class="far fa-trash-alt"></i></button>
+			</div>
+		</div>
+	</article>
+</script>
+
+<script id="mediaPageData" type="application/json">
+{{ {
+	notice: Notice,
+	browseUrl: '/api/media/json',
+	deleteUrl: '/api/media/json/delete'
+}|json_encode|raw }}
+</script>
+
+{% endblock %}
+
+{% block jsbottom %}
+	{{ parent() }}
+	<script src="/js/admin/media.js?{{"now"|date('U')}}"></script>
 {% endblock %}

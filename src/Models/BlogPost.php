@@ -37,14 +37,22 @@ class BlogPost extends \Divergence\Models\Model
     
     public function getTags()
     {
+        return implode(',', $this->getTagValues());
+    }
+
+    public function getTagValues(): array
+    {
         $Values = [];
-        if ($Tags = $this->Tags) {
+
+        if ($Tags = $this->__get('Tags')) {
             foreach ($Tags as $Tag) {
-                $Values[] = $Tag->Tag->Tag;
+                if (!empty($Tag->Tag?->Tag)) {
+                    $Values[] = $Tag->Tag->Tag;
+                }
             }
-            return implode(',', $Values);
-        } 
-        return '';
+        }
+
+        return $Values;
     }
 
     public function __get($field)
@@ -64,12 +72,10 @@ class BlogPost extends \Divergence\Models\Model
 
     public function getPermaLink($hostname=false)
     {
-        $created = $this->getValue('Created');
-        $permalink = (string) $this->getValue('Permalink');
-        $timestamp = is_numeric($created) ? (int) $created : strtotime((string) $created);
+        $timestamp = is_numeric($this->Created) ? (int) $this->Created : strtotime((string) $this->Created);
 
         return ($hostname?'https://'.$_SERVER['SERVER_NAME']:null) .
-        '/'.date('Y', $timestamp) . '/' . date('m', $timestamp).'/'.$permalink.'/';
+        '/'.date('Y', $timestamp) . '/' . date('m', $timestamp).'/'.$this->Permalink.'/';
     }
     
     public function getInternalPermaLink()

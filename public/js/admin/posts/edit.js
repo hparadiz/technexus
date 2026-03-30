@@ -8,6 +8,8 @@ var editposts = {
 	},
 	permalinkTouched: false,
 	onload: function (e)  {
+		var initialTags = Array.isArray(document.initialPostTags) ? document.initialPostTags : [];
+
 		tinymce.init({
 			selector: this.selectors.textareaContent,
 			height: 400,
@@ -159,6 +161,18 @@ var editposts = {
 		    }
 		  }
 		});
+
+		if (initialTags.length) {
+			$(this.selectors.tagsEl).val('');
+
+			initialTags.forEach((tag) => {
+				tag = String(tag || '').trim();
+
+				if (tag) {
+					$(this.selectors.tagsEl).tagsinput('add', tag);
+				}
+			});
+		}
 		
 		// keeps the plugin from throwing a form.submit() on the main form
 		$(this.selectors.tagsEl).on('itemAdded', (e) => {
