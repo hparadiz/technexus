@@ -130,6 +130,10 @@ class App extends \Divergence\App
         if ($this->Config['environment'] == 'dev') {
             $this->whoops = new \Whoops\Run(new WhoopsSystemFacade());
 
+            // Divergence 3.3 uses fractional GD crop offsets. PHP 8.5 reports
+            // these as deprecations; they must not abort thumbnail generation.
+            $this->whoops->silenceErrorsInPaths('~/Models/Media/Media\.php$~', E_DEPRECATED);
+
             $Handler = new \Whoops\Handler\PrettyPageHandler();
             $Handler->setPageTitle("Divergence Error");
 
