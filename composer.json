@@ -3,7 +3,7 @@
     "description": "Source code for technex.us",
     "type": "project",
     "require": {
-	    "divergence/divergence": "^3.0",
+	    "divergence/divergence": "^3.3",
         "filp/whoops": ">=2.1.14",
         "divergence/cli": "*",
         "ifsnop/mysqldump-php": "^2.12"

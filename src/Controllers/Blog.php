@@ -169,14 +169,14 @@ class Blog extends \Divergence\Controllers\RequestHandler
          * or
          * If query param after is present
          */
-        if (($count === static::LIMIT || $total > static::LIMIT) || isset($get['after'])) {
+        if ($count > 0 && (($count === static::LIMIT || $total > static::LIMIT) || isset($get['after']))) {
             $data['before'] = $BlogPosts[$count-1]->Created;
         }
 
         /**
          * Show "Go Forward" button if before query param is present
          */
-        if (isset($get['before'])) {
+        if ($count > 0 && isset($get['before'])) {
             $data['after'] = $BlogPosts[0]->Created;
         }
 

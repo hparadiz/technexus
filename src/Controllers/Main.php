@@ -35,14 +35,6 @@ class Main extends \Divergence\Controllers\RequestHandler
             exit;
         }
 
-        /*
-         * This is to make sure any page that loads
-         * through Apache's ErrorDocument returns 200
-         * instead of 404.
-         */
-        header('HTTP/1.0 200 OK');
-        //header('X-Powered-By: PHP/' . phpversion() . ' Div Framework (http://emr.ge) Henry\'s Revision');
-
         $blog = new Blog();
         return $blog->handle($request);
     }

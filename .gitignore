@@ -3,3 +3,5 @@
 .php_cs.cache
 /media/
 .dev
+/composer.local.json
+/composer.local.lock

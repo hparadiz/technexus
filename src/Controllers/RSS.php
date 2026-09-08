@@ -12,7 +12,7 @@ class RSS extends RequestHandler
 {
     public function handle(RequestInterface $request): ResponseInterface
     {
-        $BlogPosts = BlogPost::getAll([
+        $BlogPosts = BlogPost::getAllByWhere(['Status' => 'Published'], [
             'order' =>  'Created DESC',
             'limit' => 10,
         ]);

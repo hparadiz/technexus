@@ -11,7 +11,7 @@ namespace technexus\Controllers\Records;
 
 class Tag extends \Divergence\Controllers\RecordsRequestHandler
 {
-    //use Permissions\LoggedIn;
+    use Permissions\AdminWriteGuestRead;
     
     public static $recordClass = 'technexus\\Models\\Tag';
 }

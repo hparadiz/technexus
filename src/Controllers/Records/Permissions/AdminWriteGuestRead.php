@@ -37,7 +37,7 @@ trait AdminWriteGuestRead
 
     public function checkUploadAccess()
     {
-        return $this->is();
+        return App::$App->is_loggedin();
     }
     
     public function checkAPIAccess()

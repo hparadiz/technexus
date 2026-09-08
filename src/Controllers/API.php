@@ -14,6 +14,8 @@ use \technexus\App as App;
 use Psr\Http\Message\RequestInterface;
 use Divergence\IO\Database\MySQL as DB;
 use Psr\Http\Message\ResponseInterface;
+use Divergence\Responders\Response;
+use Divergence\Responders\JsonBuilder;
 use \technexus\Controllers\Records\Tag as Tag;
 use \technexus\Controllers\Records\BlogPost as BlogPost;
 use \technexus\Controllers\Media as Media;
@@ -34,14 +36,29 @@ class API extends \Divergence\Controllers\RequestHandler
     {
         switch ($action = $this->shiftPath()) {
             case 'blogpost':
-                return (new BlogPost())->handle($request);
+                if (!App::$App->is_loggedin()) {
+                    return (new Response(new JsonBuilder('Unauthorized', [
+                        'success' => false,
+                        'message' => 'Login required.',
+                    ])))->withStatus(403);
+                }
+                $handler = new BlogPost();
+                $handler->responseBuilder = JsonBuilder::class;
+                return $handler->handle($request);
 
             case 'media':
                 return (new Media())->handle($request);
 
             case 'tags':
-                return (new Tag())->handle($request);
+                $handler = new Tag();
+                $handler->responseBuilder = JsonBuilder::class;
+                return $handler->handle($request);
             
         }
+
+        return (new Response(new JsonBuilder('Not Found', [
+            'success' => false,
+            'message' => 'Unknown API endpoint.',
+        ])))->withStatus(404);
     }
 }
